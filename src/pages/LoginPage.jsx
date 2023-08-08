@@ -8,10 +8,13 @@ import Logo from "../assets/Logo.png"
 
 import "../styles/styles.js"
 import "../styles/styles.css"
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
-
-const LoginPage = () => {
+const LoginPage = (props) => {
     const { authenticated, login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -35,12 +38,16 @@ const LoginPage = () => {
             return navigate("/home")
         }
     }, [])
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     return (
         <div class="container">
-            {/* <div className="image-container"> */}
             <img src={Imagem} alt="logo"></img>
 
-            {/* </div> */}
             <div id="form-container">
                 <img src={Logo} alt="logo" className="logo"></img>
 
@@ -56,32 +63,45 @@ const LoginPage = () => {
                         style={{ width: 400 }}
                     />
                     <br />                    <br />
-                    <TextField
-                        id="ussenha"
-                        label="senha"
-                        type="password"
-                        name="ussenha"
-                        value={ussenha}
-                        onChange={(e) => setPassword(e.target.value)}
-                        variant="outlined"
-                        style={{ width: 400 }}
 
-                    />
                     <br />                    <br />
+
+
+
                     <div className="actions">
-                        <Button
-                            id="btn-entrar"
-                            variant="contained"
-                            size="medium"
-                            type="submit"
-                            style={{ width: 400, height: 47 }}
 
-                        >
-
-
-                            Entrar
-                        </Button>
+                        <TextField
+                            style={{ width: 400 }}
+                            id="ussenha"
+                            label="senha"
+                            name="ussenha"
+                            value={ussenha}
+                            onChange={(e) => setPassword(e.target.value)}
+                            {...props}
+                            type={showPassword ? 'text' : 'password'}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleTogglePassword} edge="end">
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
                     </div>
+                    <Button
+                        id="btn-entrar"
+                        variant="contained"
+                        size="medium"
+                        type="submit"
+                        style={{ width: 400, height: 47 }}
+
+                    >
+
+
+                        Entrar
+                    </Button>
                 </form>
             </div>
         </div>
