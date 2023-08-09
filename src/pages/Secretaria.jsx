@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from "react"
+import "../styles/secretaria.css"   
 
 
 const CriarSecretaria = () => {
@@ -57,10 +58,14 @@ const CriarSecretaria = () => {
 
     return(
         <div>
-            <h1>
-                Criação de Secretarias
+            <div id="cabecalhoSecretaria">
+                <h1>cabecalho</h1>
+            </div>
+            <div id="formSecretaria">
+                <h1>
+                    Criação de Secretarias
 
-            </h1>
+                </h1>
                 <div>
                     <form  onSubmit={handleSubmit}>
 
@@ -71,7 +76,7 @@ const CriarSecretaria = () => {
                         type='secsigla'
                         value={secsigla}
                         onChange={handleInputChange}/>
-
+                        <br />
                         <TextField
                         id='secnome'
                         label='Nome da Secretaria'
@@ -79,7 +84,7 @@ const CriarSecretaria = () => {
                         type='secnome'
                         value={secnome}
                         onChange={handleInputChange}/>
-
+                        <br />
                         <Button
                             id="btn-entrar"
                             variant="contained"
@@ -92,6 +97,7 @@ const CriarSecretaria = () => {
 
                     </form>
                    
+                    </div>
                 </div>
         </div>
     );
