@@ -15,6 +15,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -32,6 +33,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -64,7 +67,7 @@ const Home = () => {
                 'session': recoveredSession
             }
         }).then((res) => {
-            console.log(res.data)
+            console.log('lista projeto', res.data)
             setListaProjeto(res)
         })
             .catch((error) => {
@@ -78,7 +81,7 @@ const Home = () => {
         }
     }, [])
 
-    const { usperfil, ususers } = JSON.parse(recoveredSession);
+    const { ususers } = JSON.parse(recoveredSession); 
 
     const handleLogout = () => {
         logout();
@@ -168,7 +171,8 @@ const Home = () => {
         setOpen(false);
     };
 
-    const handleNavigation = (route) => {
+    const handleNavigation = (route,text) => {
+        setSelectedMenuItem(text);
         navigate(route);
         handleDrawerClose();
     };
@@ -184,7 +188,7 @@ const Home = () => {
         { text: 'Atualizar Departamento', route: '/Departamentos', icon: <InboxIcon /> },
 
     ];
-
+    const [selectedMenuItem, setSelectedMenuItem] = useState("Início")
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -200,6 +204,7 @@ const Home = () => {
                         disableRipple
 
                     >
+
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div">
@@ -226,22 +231,65 @@ const Home = () => {
                     </IconButton>
                 </Box>
                 <List>
+                    <ListItem>
+                        <ListItemButton onClick={() => handleNavigation('profile')}>
+                            <ListItemIcon>
+                                <AccountCircleIcon className="icon" />
+                            </ListItemIcon>
+                            <ListItemText primary={ ususers } />
+                        </ListItemButton>
+                    </ListItem>
                     {menuItems.map((item) => (
-                        <ListItem key={item.text}>
+                        <ListItem key={item.text}   className={selectedMenuItem === item.text ? "selected-menu-item" : ""}>
                             <ListItemButton onClick={() => handleNavigation(item.route)}>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.text} />
                             </ListItemButton>
                         </ListItem>
                     ))}
+                    <ListItem>
+                        <ListItemButton onClick={handleLogout}>
+                            <ListItemIcon>
+                                <LogoutIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Logout" />
+                        </ListItemButton>
+                    </ListItem>
                 </List>
+
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <Toolbar />
-                <div class="table-container"> {/* Wrap the table with a container */}
-                    tabela
+            <Toolbar />
+            <div>
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead class="table-header">
+                            <tr>
+                                <th>Nome</th>
+                                <th>ID Sonner</th>
+                                <th>Departamento</th>
+                                <th>Valor</th>
+                                <th>Detalhes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listaProjeto && listaProjeto.data && listaProjeto.data.map((projeto, index) => (
+                                <tr key={index}>
+                                    <td>{projeto.prjdescresumida}</td>
+                                    <td>{projeto.idSonner}</td>
+                                    <td>{projeto.depNome}</td>
+                                    <td>{projeto.prjvalor}</td>
+                                    <td>
+                                        <a href={`/detalhesLicitacoes/${projeto.idetapas_projeto}`}>
+                                            <Button variant="contained">Detalhes</Button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            </Box>
+            </div>
+
         </Box>
     );
 }

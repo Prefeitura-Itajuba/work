@@ -218,7 +218,7 @@ const Cadastro = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
       
-          <div className="container">
+          <div className="centralizaDiv">
             <div id="form-container">
               <form onSubmit={handleSubmit}>
                 <TextField
@@ -228,6 +228,7 @@ const Cadastro = () => {
                   name="usemail"
                   value={usemail}
                   onChange={handleInputChange}
+                 
                 />
                 <TextField
                   id="ususers"
@@ -236,6 +237,7 @@ const Cadastro = () => {
                   name="ususers"
                   value={ususers}
                   onChange={handleInputChange}
+                 
                 />
                 <TextField
                   id="ussenha"
@@ -244,6 +246,7 @@ const Cadastro = () => {
                   name="ussenha"
                   value={ussenha}
                   onChange={handleInputChange}
+                  
                 />
                 <TextField
                   id="ustelefone"
@@ -252,7 +255,7 @@ const Cadastro = () => {
                   name="ustelefone"
                   value={ustelefone}
                   onChange={handleInputChange}
-                />
+                ></TextField>
                 <TextField
                   id="usmatricula"
                   label="Matricula"
@@ -260,6 +263,7 @@ const Cadastro = () => {
                   name="usmatricula"
                   value={usmatricula}
                   onChange={handleInputChange}
+                 
                 />
                 <TextField
                   id="usperfil"
@@ -276,6 +280,7 @@ const Cadastro = () => {
                   name="Departamento_id"
                   value={Departamento_id}
                   onChange={handleInputChange}
+                  
                 />
 
                 <Button
