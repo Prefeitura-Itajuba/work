@@ -6,7 +6,6 @@ import { TextField } from "@mui/material";
 import { api, createSession } from "../services/api"
 import AppRoutes from "../AppRoutes";
 import { useNavigate, Link } from "react-router-dom";
-import Solicitacao from "./Solicitacao";
 import "../styles/styles.css";
 import { styled, useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -18,17 +17,15 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
+import Drawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -43,7 +40,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 const Home = () => {
-    const drawerWidth = 240;
+
+
 
     const { authenticated, logout } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -57,9 +55,7 @@ const Home = () => {
         return formattedDate;
     }
 
-
     const recoveredSession = localStorage.getItem("session");
-
     const [listaProjeto, setListaProjeto] = useState([]);
 
     useEffect(() => {
@@ -76,25 +72,13 @@ const Home = () => {
             })
     }, []);
 
-    // console.log("lsta projeto", listaProjeto);
-
     useEffect(() => {
         if (!authenticated) {
             return navigate("/login")
         }
     }, [])
 
-
-
-
-
-
-
-
     const { usperfil, ususers } = JSON.parse(recoveredSession);
-
-
-
 
     const handleLogout = () => {
         logout();
@@ -115,66 +99,7 @@ const Home = () => {
             })
     }, []);
 
-    const openedMixin = (theme) => ({
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        overflowX: 'hidden',
-    });
-
-    const closedMixin = (theme) => ({
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        overflowX: 'hidden',
-        width: `calc(${theme.spacing(7)} + 1px)`,
-        [theme.breakpoints.up('sm')]: {
-            width: `calc(${theme.spacing(8)} + 1px)`,
-        },
-    });
-
-    const DrawerHeader = styled('div')(({ theme }) => ({
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-    }));
-
-    const AppBar = styled(MuiAppBar, {
-        shouldForwardProp: (prop) => prop !== 'open',
-    })(({ theme, open }) => ({
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        ...(open && {
-            marginLeft: drawerWidth,
-            width: `calc(100% - ${drawerWidth}px)`,
-            transition: theme.transitions.create(['width', 'margin'], {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        }),
-    }));
-    const theme = useTheme();
     // const [open, setOpen] = React.useState(false);
-
-    // const handleDrawerOpen = () => {
-    //     setOpen(true);
-    // };
-
-    // const handleDrawerClose = () => {
-    //     setOpen(false);
-    // };
-
-    const [open, setOpen] = React.useState(false);
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -184,112 +109,159 @@ const Home = () => {
     };
 
 
-    const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+    const drawerWidth = 240;
+
+    const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         ({ theme, open }) => ({
-            width: drawerWidth,
-            flexShrink: 0,
-            whiteSpace: 'nowrap',
-            boxSizing: 'border-box',
-            ...(open && {
-                ...openedMixin(theme),
-                '& .MuiDrawer-paper': openedMixin(theme),
+            flexGrow: 1,
+            padding: theme.spacing(3),
+            transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
             }),
-            ...(!open && {
-                ...closedMixin(theme),
-                '& .MuiDrawer-paper': closedMixin(theme),
+            marginLeft: `-${drawerWidth}px`,
+            ...(open && {
+                transition: theme.transitions.create('margin', {
+                    easing: theme.transitions.easing.easeOut,
+                    duration: theme.transitions.duration.enteringScreen,
+                }),
+                marginLeft: 0,
             }),
         }),
     );
 
+    const AppBar = styled(MuiAppBar, {
+        shouldForwardProp: (prop) => prop !== 'open',
+    })(({ theme, open }) => ({
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        ...(open && {
+            width: `calc(100% - ${drawerWidth}px)`,
+            marginLeft: `${drawerWidth}px`,
+            transition: theme.transitions.create(['margin', 'width'], {
+                easing: theme.transitions.easing.easeOut,
+                duration: theme.transitions.duration.enteringScreen,
+            }),
+        }),
+    }));
+
+    const DrawerHeader = styled('div')(({ theme }) => ({
+        display: 'flex',
+        alignItems: 'center',
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: 'flex-end',
+    }));
+
+
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    const handleNavigation = (route) => {
+        navigate(route);
+        handleDrawerClose();
+    };
+
+    const menuItems = [
+        { text: 'Início', route: '/home', icon: <InboxIcon /> },
+        { text: 'Novo Usuário', route: '/NovoUsuario', icon: <MailIcon /> },
+        { text: 'Nova solicitação', route: '/NovaSolicitacao', icon: <MailIcon /> },
+
+        { text: 'Detalhes Licitações', route: '/detalhesLicitacoes/:id', icon: <InboxIcon /> },
+        { text: 'Processos Licitatórios', route: '/processos', icon: <MailIcon /> },
+        { text: 'Nova Secretaria', route: '/NovaSecretaria', icon: <InboxIcon /> },
+        { text: 'Atualizar Departamento', route: '/Departamentos', icon: <InboxIcon /> },
+
+    ];
 
     return (
-        <div>
-            <div id="cabecalho">
-                <button id="relatorio" onClick={() => { navigate("/relatorioSolicitacoes") }}>Relatório</button>
-                <button id="cadastrar" onClick={() => { navigate("/NovoUsuario") }}>Cadastrar</button>
-                <button id="cadastrarSecretaria" onClick={() => { navigate("/NovaSecretaria") }}>Cadastrar Secretaria</button>
-                <button id="AtualizarDepartamento" onClick={() => { navigate("/Departamentos") }}>Atualizar Departamento</button>
-                <button id="PL" onClick={() => { navigate("/ProcessosLicitatorios") }}>Processos Licitatórios</button>
-                {/* <button onClick={handleLogout}>Logout</button> */}
-                <Button variant="outlined" onClick={handleClickOpen}>
-                    Sair
-                </Button>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                    
-                >
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
 
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Deseja realmente sair?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancelar</Button>
-                        <Button onClick={handleLogout} autoFocus className="colorBtn">
-                            Sair
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </div>
-            <h1 id="titulo">Lista de Solicitações</h1>
-            <p>Perfil do usuário: {ususers}</p>
-            <p>Nome da sessão: {usperfil}</p>
-            <div id="barra">
-                <TextField
-                    id="pesquisa"
-                    label="Pesquisa"
-                    variant="outlined">
+                        disableRipple
 
-                </TextField>
-                <Link to="/NovaSolicitacao">
-                    <Button
-                        id="novaSolicitacão"
-                        variant="contained"
-                        color="success"
-                        sx={{ height: "5vh" }}
                     >
-                        Nova Solicitação
-                    </Button>
-                </Link>
-            </div>
-            <div id="projetos">
-                <table>
-                    <thead>
-                        <tr>
-
-                            <th>Descrição Resumida</th>
-                            <th>N° da Solicitação</th>
-                            <th>Departamento</th>
-
-                            <th>Valor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {listaProjeto && listaProjeto.data && listaProjeto.data.map((projeto, index) => (
-                            <tr key={index}>
-
-                                <td>{projeto.prjdescresumida}</td>
-                                <td>{projeto.idSonner}</td>
-                                <td>{projeto.depNome}</td>
-                                <td>{projeto.prjvalor}</td>
-                                <Link to={`/detalhesLicitacoes/${projeto.idetapas_projeto}`}>
-                                    <button>Detalhes</button>
-                                </Link>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-
-            </div>
-
-
-
-        </div>
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        Workflow
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                        boxSizing: 'border-box',
+                    },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={open}
+            >
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <IconButton onClick={handleDrawerClose}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                </Box>
+                <List>
+                    {menuItems.map((item) => (
+                        <ListItem key={item.text}>
+                            <ListItemButton onClick={() => handleNavigation(item.route)}>
+                                <ListItemIcon>{item.icon}</ListItemIcon>
+                                <ListItemText primary={item.text} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Drawer>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <Toolbar />
+                <div class="table-container"> {/* Wrap the table with a container */}
+                    tabela
+                </div>
+            </Box>
+        </Box>
     );
 }
 
 export default Home
+
+
+
+
+{/* <tbody> */ }
+{/* {listaProjeto && listaProjeto.data && listaProjeto.data.map((projeto, index) => (
+    <tr key={index}>
+
+        <td>{projeto.prjdescresumida}</td>
+        <td>{projeto.idSonner}</td>
+        <td>{projeto.depNome}</td>
+        <td>{projeto.prjvalor}</td>
+        <Link to={`/detalhesLicitacoes/${projeto.idetapas_projeto}`}>
+            <button>Detalhes</button>
+        </Link>
+    </tr>
+))} */}
+// </tbody>

@@ -11,12 +11,9 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 
-
-const LoginPage = (props) => {
+const LoginPage = () => {
     const { authenticated, login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -40,8 +37,6 @@ const LoginPage = (props) => {
         setShowPassword(!showPassword);
     };
 
-    AOS.init();
-
     return (
         <div>
             <div className="container">
@@ -49,13 +44,10 @@ const LoginPage = (props) => {
                     <img src={Imagem} alt="background" className="background-image" />
                 </div>
                 <div className="login-container">
-                <img src={Logo} alt="background" className="logoimg" />
+                <img src={Logo} alt="background" draggable="false" className="logoimg" />
                     <form className="form" onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
-
-
-
                                 <TextField
                                     id="usemail"
                                     label="email"
@@ -66,7 +58,6 @@ const LoginPage = (props) => {
                                     variant="outlined"
                                     InputProps={{ disableUnderline: true }}
                                     fullWidth
-
                                 />
                             </Grid>
                             <Grid item xs={12}>
