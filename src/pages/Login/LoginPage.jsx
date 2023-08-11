@@ -1,12 +1,12 @@
 import { Button, Grid, TextField } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/auth";
+import { AuthContext } from "../../context/auth";
 import { Navigate, useNavigate } from "react-router-dom";
-import Imagem from "../assets/image.png";
-import Logo from "../assets/ogo.png";
+import Imagem from "../../assets/image.png";
+import Logo from "../../assets/ogo.png";
 
-import "../styles/styles.js";
-import "../styles/styles.css";
+// import "../styles/styles.js";
+// import "../styles/styles.css";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";

@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useState, useEffect } from "react";
 import { Button } from "@mui/material";
-import { AuthContext } from "../context/auth";
+import { AuthContext } from "../../context/auth";
 import { TextField } from "@mui/material";
-import { api, createSession } from "../services/api"
-import AppRoutes from "../AppRoutes";
+import { api, createSession } from "../../services/api"
+import AppRoutes from "../../router/AppRoutes";
 import { useNavigate, Link } from "react-router-dom";
-import "../styles/styles.css";
+// import "../styles/styles.css";
 import { styled, useTheme } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';

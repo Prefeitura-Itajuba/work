@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Button } from "@mui/material";
-import { AuthContext } from "../context/auth";
+import { AuthContext } from "../../context/auth";
 import { TextField } from "@mui/material";
-import { api } from "../services/api"
-import AppRoutes from "../AppRoutes";
+import { api } from "../../services/api"
+import AppRoutes from "../../router/AppRoutes";
 import { useNavigate, Link } from "react-router-dom";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -27,6 +27,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { styled, useTheme } from '@mui/material/styles';
+// import "../styles/solicitacao"
+
 
 const Solicitacao = () => {
 

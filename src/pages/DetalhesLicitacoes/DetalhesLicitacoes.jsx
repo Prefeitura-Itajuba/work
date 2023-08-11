@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { api } from "../services/api";
-import { AuthContext } from "../context/auth";
+import { api } from "../../services/api";
+import { AuthContext } from "../../context/auth";
 import { useParams } from "react-router-dom";
 
 const DetalhesLicitacoes = () => {

@@ -1,16 +1,16 @@
 import React from "react";
 import { Button } from "@mui/material";
-import { AuthContext } from "../context/auth";
+import { AuthContext } from "../../context/auth";
 import { TextField } from "@mui/material";
-import { api, createSession } from "../services/api"
-import AppRoutes from "../AppRoutes";
+import { api, createSession } from "../../services/api"
+import AppRoutes from "../../router/AppRoutes";
 import { useNavigate, Link } from "react-router-dom";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from "react"
-import "../styles/secretaria.css"
+// import "../styles/secretaria.css"
 import MuiAppBar from '@mui/material/AppBar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';

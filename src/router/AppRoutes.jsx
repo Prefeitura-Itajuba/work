@@ -7,15 +7,15 @@ import {
     useNavigate,
 } from "react-router-dom";
 
-import LoginPage from "./pages/LoginPage";
-import Home from "./pages/Home";
-import Cadastro from "./pages/Cadastro";
-import Processos from "./pages/Processos";
-import Solicitacao from "./pages/Solicitacao";
-import { AuthProvider, AuthContext } from "./context/auth";
-import DetalhesLicitacoes from "./pages/DetalhesLicitacoes";
-import CriarSecretaria from "./pages/Secretaria";
-import AtualizarDepartamento from "./pages/Departamento";
+import LoginPage from "../pages/Login/LoginPage";
+import Home from "../pages/Home/Home";
+import Cadastro from "../pages/Cadastro/Cadastro";
+import Processos from "../pages/Processos/Processos";
+import Solicitacao from "../pages/Solicitacao/Solicitacao";
+import { AuthProvider, AuthContext } from "../context/auth";
+import DetalhesLicitacoes from "../pages/DetalhesLicitacoes/DetalhesLicitacoes";
+import CriarSecretaria from "../pages/Secretaria/Secretaria";
+import AtualizarDepartamento from "../pages/Departamento/Departamento";
 // import CriarDepartamento from "./pages/CriarDepartamento"
 
 
