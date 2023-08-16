@@ -1,0 +1,109 @@
+.positionBtn {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.form-container {
+    font-family: tahoma;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+  }
+  
+  .form-label {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .form-input {
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .form-input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 1px rgba(52, 152, 219, 0.7);
+  }
+  
+  .form-select {
+    height: 42px;
+    width: 180px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .form-select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 1px rgba(52, 152, 219, 0.7);
+  }
+  
+  .form-btn {
+    background-color: #1a83ff;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    height: 40px;
+    border-color: transparent;
+    width: 150px;
+  }
+  
+  .form-btn:hover {
+    background-color: #193c5b;
+  }
+  
+  .form-section {
+    margin-bottom: 20px;
+  }
+  
+  .form-flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-flex-item {
+    margin-right: 10px;
+  }
+  
+  .form-align-btn {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-top: 30px;
+  }
+  
+  .form-text-center {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+ 
+    margin-top: 30px;
+  }
+
+  .form-select {
+    height: 42px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .form-input {
+    width: 100%; /* Change this to occupy the entire width */
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }

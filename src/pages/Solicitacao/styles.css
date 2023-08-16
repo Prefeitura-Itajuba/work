@@ -1,0 +1,22 @@
+#prjdescricao{
+    height: 350px;
+    width: 60%;
+
+}
+
+form{
+    margin-left: 30%;
+    margin-top: 10%
+}
+
+#idSonner{
+    margin-right: 20%;
+}
+
+#prjvalor{
+    margin-right: 20%
+}
+
+#enviar{
+    margin-left: 28%;
+}

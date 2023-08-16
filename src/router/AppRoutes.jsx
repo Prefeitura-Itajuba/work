@@ -16,7 +16,8 @@ import { AuthProvider, AuthContext } from "../context/auth";
 import DetalhesLicitacoes from "../pages/DetalhesLicitacoes/DetalhesLicitacoes";
 import CriarSecretaria from "../pages/Secretaria/Secretaria";
 import AtualizarDepartamento from "../pages/Departamento/Departamento";
-// import CriarDepartamento from "./pages/CriarDepartamento"
+import Navbar from '../components/Sidebar/Navbar';
+
 
 
 const AppRoutes = () => {
@@ -31,14 +32,19 @@ const AppRoutes = () => {
         return children;
     };
 
+
+    const excludedPaths = ["/"];
+
     return (
         <Router>
+
+
             <AuthProvider>
                 <Routes>
                     <Route exact path="/" element={<LoginPage />} />
                     <Route exact path="/home" element={<Private><Home /></Private>} />
                     <Route exact path="/NovaSolicitacao" element={<Private><Solicitacao /></Private>} />
-                    <Route exact path="/detalhesLicitacoes/:id" element={<Private><DetalhesLicitacoes /></Private>} />
+                    <Route exact path="/detalhesLicitacoes/:projetoId" element={<Private><DetalhesLicitacoes /></Private>} />
                     {/* <Route path="/etapasprojetos/:id" component={EtapaProjetoDetail} /> */}
                     <Route exact path="/NovoUsuario" element={<Private><Cadastro /></Private>} />
                     <Route exact path="/processos" element={<Private><Processos /></Private>} />
@@ -50,6 +56,5 @@ const AppRoutes = () => {
         </Router >
     )
 }
-//novoProjeto -> processosLicitatórios
 
 export default AppRoutes;

@@ -1,171 +1,213 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { api } from "../../services/api";
-import { AuthContext } from "../../context/auth";
-import { useParams } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
+import "./styles.css";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
 const DetalhesLicitacoes = () => {
-  const dataHoje = new Date();
-  const idRecuperado = localStorage.getItem("session"); 
-  console.log(JSON.parse(idRecuperado));
-  const { idUsuaros } = JSON.parse(idRecuperado);
+  const { projetoId } = useParams();
+  const [etapaProjeto, setEtapasProjeto] = useState([]);
+  const [projeto, setProjeto] = useState([]);
+  const recoveredSession = localStorage.getItem("session");
+  const [open, setOpen] = React.useState(false);
 
-
-  const [formData, setFormData] = useState({ 
-      // prjid: "",
-      idSonner: "",
-      prjdata_inicial: dataHoje,
-      prjdescricao: "",
-      prjdescresumida: "",
-      prjdata_final: "",
-      status: "aberto",
-      prjobrservacao_final: "",
-      Usuario_id: idUsuaros,
-      prjvalor: "",
-      tipoprojeto: ""
-  });
-  // console.log(formData.tipoprojeto);
-  // console.log(formData.Usuario_id);
-  
-  const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-  
-  const handleSubmit = (e) => {
-      e.preventDefault();
-      // Aqui você pode fazer a chamada à API para salvar os dados f
-      api
-      .post("etapasprojetos", formData)
+  useEffect(() => {
+    api
+      .get(`projetos`, {
+        headers: {
+          session: recoveredSession,
+        },
+      })
       .then((res) => {
-          console.log("Solicitação salva com sucesso.", res)
+        console.log("projeto", res.data);
+        setProjeto(res);
       })
       .catch((error) => {
-          console.error("Falha ao salvar solicitação", error);
+        console.error(error);
       });
+  }, []);
+
+  const [data, setData] = useState({
+    etpobservacao: "",
+    Projeto_id: "",
+    etpstatus: "",
+    Usuarios_usuarioid: "",
+    Departamento_Depid: "",
+  });
+
+  const etpStatusEnum = {
+    aberto: "aberto",
+    encaminhado: "encaminhado",
+    cancelado: "cancelado",
+    retorna: "retorna",
   };
-  
+
+  useEffect(() => {
+    api
+      .get(`etapasprojetos/${projetoId}`)
+      .then((res) => {
+        setEtapasProjeto(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const alterarDados = (event) => {
+    setData((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const enviarEtapa = (e) => {
+    e.preventDefault();
+    const storage = localStorage.getItem("session");
+    const session = JSON.parse(storage);
+    console.log({
+      ...data,
+      Usuarios_usuarioid: session.idUsuaros,
+      Projeto_id: projetoId,
+    });
+    api
+      .post("etapasprojetos", {
+        ...data,
+        Usuarios_usuarioid: session.idUsuaros,
+        Projeto_id: projetoId,
+      })
+      .then(({ data }) => {
+        setEtapasProjeto((prevState) => [...prevState, data]);
+      })
+      .catch();
+  };
+
+  const uniqueDepartments = [...new Set(etapaProjeto.map(etapa => etapa.Departamento_Depid))];
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const buttonStyle = {
+    backgroundColor: '#1a83ff',
+    fontFamily: 'Inter',
+    fontWeight: '300',
+    color: 'white',
+  };
+  const dialogWidth = '700px';
   return (
+    <div>
+      {/* {etapaProjeto.projeto_id} */}
+      <h1>Detalhes projeto</h1>
+      criar logica ao clicar em um projeto,deve mostrar somente esse
       <div>
+        <div className="positionBtn">
+          <Button variant="outlined" onClick={handleClickOpen} style={buttonStyle}>
+            Atualizar
+          </Button>
+        </div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          PaperProps={{
+            style: {
+              width: '100%',
+              maxWidth: dialogWidth,
+            },
+          }}
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            Atualizar Solicitação
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              <form autoComplete="off" onSubmit={enviarEtapa}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div className="form-section">
+                    <label className="form-label">Status</label>< br />
+                    <input className="form-input" type="text" name="etpstatus" onChange={alterarDados} />
+                  </div>
 
-    <form onSubmit={handleSubmit}>
-      {/* <div>
-        <label htmlFor="prjid">prjid:</label>
-        <input
-          type="text"
-          id="prjid"
-          name="prjid"
-          value={formData.prjid}
-          onChange={handleChange}
-          />
-      </div> */}
+                  <div className="form-section">
+                    <label className="form-label">Departamento</label>< br />
+                    <select className="form-select" name="Departamento_Depid" onChange={alterarDados}>
+                      <option value="">Selecione um departamento</option>
+                      {uniqueDepartments.map(departamento => (
+                        <option key={departamento} value={departamento}>
+                          {departamento}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-      <div>
-        <label htmlFor="idSonner">idSonner:</label>
-        <input
-          type="text"
-          id="idSonner"
-          name="idSonner"
-          value={formData.idSonner}
-          onChange={handleChange}
-          />
+                  <div className="form-section">
+                    <label className="form-label">Observacao</label><br />
+                    <input className="form-input" type="text" name="etpobservacao" onChange={alterarDados} />
+                  </div>
+
+                  <div className="form-align-btn">
+                    <button className="form-btn" type="submit">Enviar etapa</button>
+                  </div>
+                </div>
+              </form>
+            </DialogContentText>
+
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>
+              Sair
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
-      <div>
-        <label htmlFor="prjdescresumida">prjdescresumida:</label>
-        <input
-          type="text"
-          id="prjdescresumida"
-          name="prjdescresumida"
-          value={formData.prjdescresumida}
-          onChange={handleChange}
-          />
+
+      <h2 className="testeTitulo">
+        DETALHES ETAPA PROJETO (o que fica em baixo)
+      </h2>
+      <div className="table">
+        <table className="">
+          <thead className="table-header">
+            <tr>
+              <th>Início</th>
+              <th>Término</th>
+              <th>Dias Decorridos	</th>
+              <th>Departamento</th>
+              <th>Status</th>
+              <th>Usuário</th>
+            </tr>
+          </thead>
+          <tbody>
+            {etapaProjeto.map((projeto) => (
+              <tr key={projeto}>
+                {/* <td>{projeto.prjid}</td> */}
+                {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
+                <td>{projeto.etpdata}</td>
+                <td>{projeto.idSonner}</td>
+                <td>{projeto.depNome}</td>
+                {/* <td>{projeto.Departamento_Depid}</td> */}
+                {/* <td>{projeto.Usuario_id}</td> */}
+
+                <td>{projeto.prjvalor}</td>
+
+              </tr>
+            ))}
+
+{/* {projeto.prjdescresumida} */}
+          </tbody>
+        </table>
       </div>
-      <div>
-
-      </div>
-
-      <div>
-        <label htmlFor="prjdescricao">prjdescricao:</label>
-        <input
-          type="text"
-          id="prjdescricao"
-          name="prjdescricao"
-          value={formData.prjdescricao}
-          onChange={handleChange}
-          />
-      </div>
-
-      {/* <div>
-        <label htmlFor="prjdata_final">prjdata_final:</label>
-        <input
-          type="date"
-          id="prjdata_final"
-          name="prjdata_final"
-          value={formData.prjdata_final}
-          onChange={handleChange}
-          />
-      </div> */}
-
-      {/* <div>
-        <label htmlFor="status">status:</label>
-        <input
-          type="text"
-          id="status"
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          />
-      </div> */}
-
-      {/* <div>
-        <label htmlFor="prjobrservacao_final">prjobrservacao_final:</label>
-        <input
-          type="text"
-          id="prjobrservacao_final"
-          name="prjobrservacao_final"
-          value={formData.prjobrservacao_final}
-          onChange={handleChange}
-          />
-      </div> */}
-
-
-
-      <div>
-        <label htmlFor="prjvalor">prjvalor:</label>
-        <input
-          type="text"
-          id="prjvalor"
-          name="prjvalor"
-          value={formData.prjvalor}
-          onChange={handleChange}
-          />
-      </div>
-      <div>
-          <select 
-          name="tipoprojeto" 
-          id="tipoprojeto"
-          value={formData.tipoprojeto}
-          onChange={handleChange}> Selecione o tipo de solicitação
-              <option value="1">Solicitação Comum</option>
-              <option value="2">ATA</option>
-          </select>
-      </div>
-      {/* <div>
-        <label htmlFor="tipoprojeto">tipoprojeto:</label>
-        <input
-          type="text"
-          id="tipoprojeto"
-          name="tipoprojeto"
-          value={formData.tipoprojeto}
-          onChange={handleChange}
-          />
-      </div> */}
-
-      <button type="submit">Salvar</button>
-    </form>
-  </div>
-);
+      <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre>
+    </div>
+  );
 };
-
 
 export default DetalhesLicitacoes;
 // {projectDetails && projectDetails.map((etapa) => (
