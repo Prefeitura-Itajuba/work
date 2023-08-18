@@ -103,6 +103,8 @@ const Cadastro = () => {
     logout();
   };
 
+  
+
   return (
     <div>
       <Navbar />

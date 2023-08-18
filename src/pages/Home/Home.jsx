@@ -7,6 +7,7 @@ import { useNavigate, Link, NavLink } from "react-router-dom";
 import "./styles.css";
 import { styled, useTheme } from "@mui/material/styles";
 import Navbar from "../../components/Sidebar/Navbar";
+import Button from '@mui/material/Button';
 
 import SearchIcon from "@mui/icons-material/Search";
 import QueueIcon from '@mui/icons-material/Queue';
@@ -18,7 +19,6 @@ const Home = () => {
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [status, setStatus] = React.useState("");
   const [statusFilter, setStatusFilter] = useState('Em andamento');
-const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
   const forDate = (date) => {
@@ -109,47 +109,48 @@ const [searchTerm, setSearchTerm] = useState('');
     console.log("Clicked Project Data:", project);
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
 
   return (
     <div>
       <Navbar />
-      <button onClick={confirmLogout}>Logout</button>
       <div className="divSeparate">
         <div>
           <h1 className="h1-solicitacoes textCenter">Solicitações</h1>
         </div>
         <div className="positionInputs">
-        <select
-  name="status"
-  className="select-style"
-  value={statusFilter}
-  onChange={(e) => setStatusFilter(e.target.value)}
->
-  <option value="Em andamento">Em andamento</option>
-  <option value="Concluído">Concluído</option>
-  <option value="Cancelado">Cancelado</option>
-  <option value="Ata">Ata</option>
-</select>
+          <select
+            name="status"
+            className="select-style"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="Em andamento">Em andamento</option>
+            <option value="Concluído">Concluído</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Ata">Ata</option>
+          </select>
 
-<input
-  id="outlined-basic"
-  label="Pesquisar"
-  variant="outlined"
-  className="input-style"
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-/>
+          <input
+            id="outlined-basic"
+            label="Pesquisar"
+            variant="outlined"
+            className="input-style"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Pesquisar"
+          />
 
-<button className="btnSearch">
-  <SearchIcon />
-</button>
+          <Button variant="contained" style={{ width: '30px', height: '42px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>
+            <SearchIcon />
+          </Button>
         </div>
 
       </div>
       <div className="alignBtnSolicitacao">
         <Link to="/NovaSolicitacao">
 
-          <button className="btnSolicitacao">Nova solicitação</button>
+          <Button variant="contained" style={{ width: '146px', height: '49px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>Nova solicitação</Button>
 
         </Link>
       </div>
@@ -166,25 +167,39 @@ const [searchTerm, setSearchTerm] = useState('');
             </tr>
           </thead>
           <tbody>
-            {listaProjeto && listaProjeto.data && listaProjeto.data.map((projeto) => (
-              <tr key={projeto.prjid}>
-                {/* <td>{projeto.prjid}</td> */}
-                {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
-                <td>{projeto.prjdescresumida}</td>
-                <td>{projeto.idSonner}</td>
-                <td>{projeto.depNome}</td>
-                <td>{projeto.tpjdescricao}</td>
-                <td>{projeto.prjvalor}</td>
+            {listaProjeto &&
+              listaProjeto.data &&
+              listaProjeto.data.filter((projeto) => {
+                if (searchTerm === "") {
+                  return true; 
+                } else if (
+                  projeto.prjdescresumida
+                    .toLowerCase()
+                    .includes(searchTerm.toLowerCase())
+                ) {
+                  return true; 
+                }
+                return false; 
+              }).map((projeto, key) => (
+                <tr key={projeto.prjid}>
+                  {/* <td>{projeto.prjid}</td> */}
+                  {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
+                  <td>{projeto.prjdescresumida}</td>
+                  <td>{projeto.idSonner}</td>
+                  <td>{projeto.depNome}</td>
+                  <td>{projeto.tpjdescricao}</td>
+                  <td>{projeto.prjvalor}</td>
 
-                <td>
-                  <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`}  onClick={() => handleQueueIconClick(projeto)}
->
-                    <QueueIcon />
-                  </NavLink>
-                </td>
-              </tr>
-            ))}
+                  <td>
+                    <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} onClick={() => handleQueueIconClick(projeto)}
+                    >
+                      <QueueIcon />
+                    </NavLink>
+                  </td>
+                </tr>
+              ))}
           </tbody>
+
         </table>
       </div>
     </div>
@@ -209,3 +224,7 @@ export default Home;
 //     </td>
 //   </tr>
 // ))}
+// prjstatus
+// : 
+// 0 - > verdadeiro concluido
+// 1 -> cancelado

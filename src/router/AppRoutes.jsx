@@ -17,7 +17,7 @@ import DetalhesLicitacoes from "../pages/DetalhesLicitacoes/DetalhesLicitacoes";
 import CriarSecretaria from "../pages/Secretaria/Secretaria";
 import AtualizarDepartamento from "../pages/Departamento/Departamento";
 import Navbar from '../components/Sidebar/Navbar';
-
+import AtualizarSenha from "../pages/AtualizarSenha/AtualizarSenha";
 
 
 const AppRoutes = () => {
@@ -50,6 +50,8 @@ const AppRoutes = () => {
                     <Route exact path="/processos" element={<Private><Processos /></Private>} />
                     <Route exact path="/NovaSecretaria" element={<Private><CriarSecretaria /></Private>} />
                     <Route exact path ="/Departamentos" element={<Private><AtualizarDepartamento /></Private>} />
+                    <Route exact path ="/AtualizarSenha" element={<Private><AtualizarSenha /></Private>} />
+
                     {/* <Route exact path ="/NovoDepartamento" element={<Private><CriarDepartamento /></Private>} /> */}
                 </Routes>
             </AuthProvider>

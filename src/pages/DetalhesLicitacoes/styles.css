@@ -1,4 +1,4 @@
-.positionBtn {
+/* .positionBtn {
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
@@ -99,11 +99,12 @@
   }
   
   .form-input {
-    width: 100%; /* Change this to occupy the entire width */
+    width: 100%; 
     height: 30px;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     outline: none;
     transition: border-color 0.3s, box-shadow 0.3s;
-  }
+  } */
+

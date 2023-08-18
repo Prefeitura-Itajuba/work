@@ -10,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useState } from "react";
+import Navbar from "../../components/Sidebar/Navbar";
 
 import { styled, useTheme } from '@mui/material/styles';
 import "./styles.css"
@@ -83,7 +84,8 @@ const Solicitacao = () => {
     return (
 
 
-
+<div>
+<Navbar />
         <div class="table-container"> {/* Wrap the table with a container */}
             <div>
 
@@ -161,6 +163,7 @@ const Solicitacao = () => {
                 </form>
             </div>
         </div>
+</div>
 
     );
 };

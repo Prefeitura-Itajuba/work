@@ -1,21 +1,213 @@
-import { Button } from "@mui/material";
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../../context/auth";
+import { TextField } from "@mui/material";
+import { api, createSession } from "../../services/api";
+import { useNavigate, Link, NavLink } from "react-router-dom";
+import "./styles.css";
+import { styled, useTheme } from "@mui/material/styles";
 import Navbar from "../../components/Sidebar/Navbar";
+import Button from '@mui/material/Button';
 
+import SearchIcon from "@mui/icons-material/Search";
+import QueueIcon from '@mui/icons-material/Queue';
 const Processos = () => {
-
-
+  const { authenticated, logout } = useContext(AuthContext);
+  const recoveredSession = localStorage.getItem("session");
+  const [listaProjeto, setListaProjeto] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [status, setStatus] = React.useState("");
+  const [statusFilter, setStatusFilter] = useState('Em andamento');
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
+  const forDate = (date) => {
+    const formattedDate = new Date(date).toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+    return formattedDate;
+  };
+
+  useEffect(() => {
+    api
+      .get("projetos", {
+        headers: {
+          session: recoveredSession,
+        },
+      })
+      .then((res) => {
+        console.log("lista projeto", res.data);
+        setListaProjeto(res);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!authenticated) {
+      return navigate("/");
+    }
+  }, []);
+
+  const { ususers } = JSON.parse(recoveredSession);
+
+  useEffect(() => {
+    api
+      .get("projetos", {
+        headers: {
+          session: recoveredSession,
+        },
+      })
+      .then((res) => {
+        setListaProjeto(res);
+        console.log("lsita projeto api get", listaProjeto);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const handleLogout = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  const confirmLogout = () => {
+    logout();
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleChange = (event) => {
+    setStatus(event.target.value);
+  };
+
+  const theme = useTheme();
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const handleNavigation = (route, text) => {
+    setSelectedMenuItem(text);
+    navigate(route);
+    handleDrawerClose();
+  };
+  const handleQueueIconClick = (project) => {
+    console.log("Clicked Project Data:", project);
+  };
 
 
   return (
     <div>
-            <Navbar />
-processos</div>
+      <Navbar />
+      <div className="divSeparate">
+        <div>
+          <h1 className="h1-solicitacoes textCenter">Tela Processos</h1>
+          <b color="red">(Não está pronta,só tela fixa)</b>
+        </div>
+        <div className="positionInputs">
+          <select
+            name="status"
+            className="select-style"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="Em andamento">Em andamento</option>
+            <option value="Concluído">Concluído</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Ata">Ata</option>
+          </select>
 
+          <input
+            id="outlined-basic"
+            label="Pesquisar"
+            variant="outlined"
+            className="input-style"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Pesquisar"
+          />
+
+          <Button variant="contained"  style={{ width: '30px', height: '42px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>
+            <SearchIcon />
+          </Button>
+        </div>
+
+      </div>
+      <div className="alignBtnSolicitacao">
+        <Link to="/NovaSolicitacao">
+
+          <Button variant="contained" style={{ width: '146px', height: '49px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>Nova solicitação</Button>
+
+        </Link>
+      </div>
+      <div className="table">
+        <table className="custom-table">
+          <thead className="table-header">
+            <tr>
+              <th>Descr. Resum.</th>
+              <th>N° da Solicitação</th>
+              <th>Departamento</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Detalhes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {listaProjeto && listaProjeto.data && listaProjeto.data.map((projeto) => (
+              <tr key={projeto.prjid}>
+                {/* <td>{projeto.prjid}</td> */}
+                {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
+                <td>{projeto.prjdescresumida}</td>
+                <td>{projeto.idSonner}</td>
+                <td>{projeto.depNome}</td>
+                <td>{projeto.tpjdescricao}</td>
+                <td>{projeto.prjvalor}</td>
+
+                <td>
+                  <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} onClick={() => handleQueueIconClick(projeto)}
+                  >
+                    <QueueIcon />
+                  </NavLink>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
 export default Processos;
+// {listaProjeto && listaProjeto.data && listaProjeto.data.map((projeto) => (
+//   <tr key={projeto.prjid}>
+//     {/* <td>{projeto.prjid}</td> */}
+//     {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
+//     <td>{projeto.prjdescresumida}</td>
+//     <td>{projeto.idSonner}</td>
+//     <td>{projeto.depNome}</td>
+//     <td>{projeto.tpjdescricao}</td>
+//     <td>{projeto.prjvalor}</td>
+
+//     <td>
+//       <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} >
+//         <QueueIcon />
+//       </NavLink>
+//     </td>
+//   </tr>
+// ))}

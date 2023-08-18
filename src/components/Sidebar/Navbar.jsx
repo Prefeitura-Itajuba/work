@@ -1,11 +1,10 @@
-import React, { useState, useContext,useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { SidebarData } from "./SidebarData";
 import "./Navbar.css";
 import { IconContext } from "react-icons";
-import Dialog from "@mui/material/Dialog";
 import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -18,7 +17,13 @@ import { FormControl, Select } from '@mui/material';
 import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
 import { AccountCircle } from '@mui/icons-material';
 import { styled } from '@mui/system';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+
 function Navbar() {
   const { authenticated, logout } = useContext(AuthContext);
 
@@ -48,6 +53,7 @@ function Navbar() {
       title: "Sair",
       icon: <LogoutIcon />,
       cName: "nav-text",
+      // Cannot access 'confirmLogout' 
     },
   ];
 
@@ -86,15 +92,28 @@ function Navbar() {
     setAnchorEl(null);
   };
 
-  const confirmLogout = () => {
-    logout();
-  };
+  // const confirmLogout = () => {
+  //   logout();
+  // };
 
   useEffect(() => {
     if (!authenticated) {
       return navigate("/login");
     }
   }, []);
+
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const confirmLogout = () => {
+    handleOpenDialog();
+  };
 
   return (
     <>
@@ -108,54 +127,57 @@ function Navbar() {
           </div>
           <div className="dropdownDiv">
             <div className="align-end">
-              <Button
-                id="demo-positioned-button"
-                aria-controls={open ? 'demo-positioned-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onClick={handleClick}
-              >
-                <AccountCircle style={{ color: 'white', fontSize: '3rem' }} />
-              </Button>
-              <Menu
-                id="demo-positioned-menu"
-                aria-labelledby="demo-positioned-button"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-              >
-                <MenuItem onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#1a83ff';
-                  e.target.style.color = 'white';
-                }} onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'transparent';
-                  e.target.style.color = 'inherit';
-                }} onClick={handleClose}>Perfil</MenuItem>
-                <MenuItem onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#1a83ff';
-                  e.target.style.color = 'white';
-                }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'transparent';
-                    e.target.style.color = 'inherit';
-                  }} onClick={handleClose}>Alterar senha</MenuItem>
-                <MenuItem onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#1a83ff';
-                  e.target.style.color = 'white';
-                }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'transparent';
-                    e.target.style.color = 'inherit';
-                  }} onClick={confirmLogout}>Sair</MenuItem>
-              </Menu>
+
+
+              <div>
+                <button
+                  className="btn-dropdown"
+                  id="basic-button"
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  onClick={handleClick}
+                >
+                  <AccountCircle style={{ color: 'white', fontSize: '3rem' }} />
+                </button>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+
+                  <Link to="/AtualizarSenha">
+                    <MenuItem  style={{ color: 'black' }}>Alterar senha</MenuItem>
+                  </Link>
+                  <MenuItem onClick={confirmLogout}>Sair</MenuItem>
+                </Menu>
+                <Dialog open={openDialog} onClose={handleCloseDialog}>
+                  <DialogTitle>Confirmar Saída</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      Tem certeza que deseja sair?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleCloseDialog} color="error">
+                      Cancelar
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        handleCloseDialog();
+                        logout();
+                      }}
+
+                    >
+                      Sair
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             </div>
           </div>
         </div>
@@ -190,6 +212,8 @@ function Navbar() {
             })}
           </ul>
         </nav>
+        <div>
+        </div>
       </IconContext.Provider>
     </>
   );

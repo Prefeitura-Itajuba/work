@@ -8,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import Navbar from "../../components/Sidebar/Navbar";
 
 const DetalhesLicitacoes = () => {
   const { projetoId } = useParams();
@@ -103,6 +104,7 @@ const DetalhesLicitacoes = () => {
   const dialogWidth = '700px';
   return (
     <div>
+      <Navbar />
       {/* {etapaProjeto.projeto_id} */}
       <h1>Detalhes projeto</h1>
       criar logica ao clicar em um projeto,deve mostrar somente esse
@@ -172,9 +174,9 @@ const DetalhesLicitacoes = () => {
       <h2 className="testeTitulo">
         DETALHES ETAPA PROJETO (o que fica em baixo)
       </h2>
-      <div className="table">
-        <table className="">
-          <thead className="table-header">
+      <div className="table-container">
+        <table >
+          <thead >
             <tr>
               <th>Início</th>
               <th>Término</th>
@@ -187,20 +189,12 @@ const DetalhesLicitacoes = () => {
           <tbody>
             {etapaProjeto.map((projeto) => (
               <tr key={projeto}>
-                {/* <td>{projeto.prjid}</td> */}
-                {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
                 <td>{projeto.etpdata}</td>
                 <td>{projeto.idSonner}</td>
                 <td>{projeto.depNome}</td>
-                {/* <td>{projeto.Departamento_Depid}</td> */}
-                {/* <td>{projeto.Usuario_id}</td> */}
-
                 <td>{projeto.prjvalor}</td>
-
               </tr>
             ))}
-
-{/* {projeto.prjdescresumida} */}
           </tbody>
         </table>
       </div>
@@ -210,12 +204,3 @@ const DetalhesLicitacoes = () => {
 };
 
 export default DetalhesLicitacoes;
-// {projectDetails && projectDetails.map((etapa) => (
-//   <div key={etapa.idetapas_projeto}>
-//     <h2>Detalhes do Projeto</h2>
-//     <p>Descrição Resumida: {etapa.prjdescricao}</p>
-
-//     <button type="submit">Salvar</button>
-//   </div>
-// )
-// )}
