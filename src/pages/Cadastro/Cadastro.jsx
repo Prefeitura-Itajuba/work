@@ -113,7 +113,7 @@ const Cadastro = () => {
 
       <div className="divForm">
         <form className="custom-form" onSubmit={handleSubmit}>
-          <div className="separete">
+          <div>
             <label>Email</label>
             <input placeholder="Email" id="usemail"
               label="Email"
@@ -123,8 +123,8 @@ const Cadastro = () => {
               onChange={handleInputChange} />
 
           </div>
-          <div className="separete">
-            <label>Nome de</label>
+          <div >
+            <label>Nome de usuário</label>
             <input placeholder="Email" id="ususers"
             label="Nome de usuário"
             type="text"

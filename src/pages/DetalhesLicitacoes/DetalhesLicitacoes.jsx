@@ -2,21 +2,21 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { api } from "../../services/api";
 import { useParams, NavLink, useLocation } from "react-router-dom";
 import "./styles.css";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 import Navbar from "../../components/Sidebar/Navbar";
 import { TextField } from "@mui/material";
-import { format } from 'date-fns';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import { format } from "date-fns";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 
 const DetalhesLicitacoes = (props) => {
   const location = useLocation();
@@ -24,8 +24,10 @@ const DetalhesLicitacoes = (props) => {
   const [etapaProjeto, setEtapasProjeto] = useState([]);
   const [projeto, setProjeto] = useState([]);
   const recoveredSession = localStorage.getItem("session");
-  const [open, setOpen] = React.useState(false);
-  console.log('location.state =>>', location.state);
+  const [open, setOpen] = useState(false);
+  const [delProjeto,setDelProjeto] = useState([])
+
+  console.log("location.state =>>", location.state);
   // useEffect(() => {
   //   api
   //     .get(`projetos`, {
@@ -57,15 +59,19 @@ const DetalhesLicitacoes = (props) => {
     retorna: "retorna",
   };
 
-  useEffect(() => {
+  const handleDelete =  () =>{
     api
-      .get(`etapasprojetos/${projetoId}`)
-      .then((res) => {
-        setEtapasProjeto(res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    .get(`etapasprojetos/${projetoId}`)
+    .then((res) => {
+      setEtapasProjeto(res.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  useEffect(() => {
+    handleDelete()
   }, []);
   // console.log(location.state);
 
@@ -97,7 +103,9 @@ const DetalhesLicitacoes = (props) => {
       .catch();
   };
 
-  const uniqueDepartments = [...new Set(etapaProjeto.map(etapa => etapa.Departamento_Depid))];
+  const uniqueDepartments = [
+    ...new Set(etapaProjeto.map((etapa) => etapa.Departamento_Depid)),
+  ];
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -106,28 +114,45 @@ const DetalhesLicitacoes = (props) => {
     setOpen(false);
   };
 
-  const dialogWidth = '800px';
-  const dialogHeight = '800px'
+  const dialogWidth = "800px";
+  const dialogHeight = "800px";
 
   // const dadosDoProjeto = location.state && location.state.dadosDoProjeto;
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return format(date, 'dd/MM/yyyy'); 
+    return format(date, "dd/MM/yyyy");
   };
+
+  useEffect(() => {
+    api
+      .delete(`/projeto/${projetoId}`)
+      .then((res) => {
+        setDelProjeto(res)
+       console.log("deletou")
+      })
+      .catch((error) => {
+        console.log("ERRO",error)
+      });
+  }, []);
   return (
     <div>
       <Navbar />
       {/* {etapaProjeto.projeto_id} */}
       <div className="table">
         <table className="custom-tables">
-        <thead>
-          <tr>
-            <th>ID SONNER: {location?.state?.dadosDoProjeto?.idSonner}</th>
-            <th>VALOR: {location?.state?.dadosDoProjeto?.prjvalor}</th>
-            <th>DES RESUMIDA: {location?.state?.dadosDoProjeto?.prjdescresumida}</th>
-            <th>DATA: {formatDate(location?.state?.dadosDoProjeto?.prjdata_inicial)}</th>
-          </tr>
-        </thead>
+          <thead>
+            <tr>
+              <th>ID SONNER: {location?.state?.dadosDoProjeto?.idSonner}</th>
+              <th>VALOR: {location?.state?.dadosDoProjeto?.prjvalor}</th>
+              <th>
+                DES RESUMIDA: {location?.state?.dadosDoProjeto?.prjdescresumida}
+              </th>
+              <th>
+                DATA:{" "}
+                {formatDate(location?.state?.dadosDoProjeto?.prjdata_inicial)}
+              </th>
+            </tr>
+          </thead>
           {/* prjdata_inicial */}
           {/*  */}
           {/* prjdata_final */}
@@ -140,13 +165,15 @@ const DetalhesLicitacoes = (props) => {
               <td className="testeTam">
                 {location?.state?.dadosDoProjeto && (
                   <div>
-                    <p>Descrição Resumida: {location.state.dadosDoProjeto.prjdescricao}</p>
+                    <p>
+                      Descrição Resumida:{" "}
+                      {location.state.dadosDoProjeto.prjdescricao}
+                    </p>
                   </div>
                 )}
               </td>
             </tr>
           </tbody>
-
         </table>
       </div>
       {/* {location?.state?.dadosDoProjeto && (
@@ -156,8 +183,18 @@ const DetalhesLicitacoes = (props) => {
       )} */}
       <div>
         <div className="positionBtn">
-          <Button variant="contained" onClick={handleClickOpen} style={{ width: '146px', height: '49px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>
-            Atualizar
+          <Button
+            variant="contained"
+            onClick={handleClickOpen}
+            style={{
+              width: "146px",
+              height: "49px",
+              textTransform: "none",
+              fontFamily: "Inter",
+              fontWeight: "300",
+            }}
+          >
+            Atualizar etapa projeto
           </Button>
         </div>
         <Dialog
@@ -166,9 +203,9 @@ const DetalhesLicitacoes = (props) => {
           aria-labelledby="alert-dialog-title"
           PaperProps={{
             style: {
-              width: '100%',
+              width: "100%",
               maxWidth: dialogWidth,
-              maxHeight: dialogHeight
+              maxHeight: dialogHeight,
             },
           }}
           aria-describedby="alert-dialog-description"
@@ -177,20 +214,29 @@ const DetalhesLicitacoes = (props) => {
             Atualizar Solicitação
           </DialogTitle>
           <DialogContent>
-
-            <form autoComplete="off" onSubmit={enviarEtapa} >
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <form autoComplete="off" onSubmit={enviarEtapa}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
                 <div className="form-section">
-                  <label className="form-label">Status</label>< br />
-                  <input className="full-width-input" type="text" name="etpstatus" onChange={alterarDados} />
-
+                  <label className="form-label">Status</label>
+                  <br />
+                  <input
+                    className="full-width-input"
+                    type="text"
+                    name="etpstatus"
+                    onChange={alterarDados}
+                  />
                 </div>
 
                 <div className="form-section">
-                  <label className="form-label">Departamento</label>< br />
-                  <select className="form-select full-width-input " name="Departamento_Depid" onChange={alterarDados}>
+                  <label className="form-label">Departamento</label>
+                  <br />
+                  <select
+                    className="form-select full-width-input "
+                    name="Departamento_Depid"
+                    onChange={alterarDados}
+                  >
                     <option value="">Selecione um departamento</option>
-                    {uniqueDepartments.map(departamento => (
+                    {uniqueDepartments.map((departamento) => (
                       <option key={departamento} value={departamento}>
                         {departamento}
                       </option>
@@ -199,10 +245,15 @@ const DetalhesLicitacoes = (props) => {
                 </div>
 
                 <div className="form-section">
-                  <label className="form-label">Observacao</label><br />
-                  <input className="full-width-input " type="text" name="etpobservacao" onChange={alterarDados} />
+                  <label className="form-label">Observacao</label>
+                  <br />
+                  <input
+                    className="full-width-input "
+                    type="text"
+                    name="etpobservacao"
+                    onChange={alterarDados}
+                  />
                 </div>
-
 
                 <div className="btn-container">
                   <Button
@@ -211,11 +262,11 @@ const DetalhesLicitacoes = (props) => {
                     onClick={handleClose}
                     autoFocus
                     style={{
-                      width: '146px',
-                      height: '49px',
-                      textTransform: 'none',
-                      fontFamily: 'Inter',
-                      fontWeight: '300',
+                      width: "146px",
+                      height: "49px",
+                      textTransform: "none",
+                      fontFamily: "Inter",
+                      fontWeight: "300",
                     }}
                   >
                     Sair
@@ -224,36 +275,61 @@ const DetalhesLicitacoes = (props) => {
                     variant="contained"
                     type="submit"
                     style={{
-                      width: '146px',
-                      height: '49px',
-                      textTransform: 'none',
-                      fontFamily: 'Inter',
-                      fontWeight: '300',
+                      width: "146px",
+                      height: "49px",
+                      textTransform: "none",
+                      fontFamily: "Inter",
+                      fontWeight: "300",
                     }}
                   >
                     Atualizar
                   </Button>
-
                 </div>
-
               </div>
             </form>
           </DialogContent>
-
-
         </Dialog>
       </div>
+
+      <Button
+        variant="contained"
+        color="error"
+        type="submit"
+        onClick={handleDelete}
+        style={{
+          width: "146px",
+          height: "49px",
+          textTransform: "none",
+          fontFamily: "Inter",
+          fontWeight: "300",
+        }}
+      >
+        Deletar
+      </Button>
+      <Button
+        variant="outlined"
+        type="submit"
+        style={{
+          width: "146px",
+          height: "49px",
+          textTransform: "none",
+          fontFamily: "Inter",
+          fontWeight: "300",
+        }}
+      >
+        Atualizar
+      </Button>
 
       <h2 className="testeTitulo">
         DETALHES ETAPA PROJETO (o que fica em baixo)
       </h2>
       <div className="table-container">
-        <table className="table" >
-          <thead >
+        <table className="table">
+          <thead>
             <tr>
               <th>Início</th>
               <th>Término</th>
-              <th>Dias Decorridos	</th>
+              <th>Dias Decorridos </th>
               <th>Departamento</th>
               <th>Status</th>
               <th>Usuário</th>
@@ -268,15 +344,11 @@ const DetalhesLicitacoes = (props) => {
                 <td>{projeto.prjvalor}</td>
               </tr>
             ))}
-
-
           </tbody>
         </table>
       </div>
- 
+
       <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre>
-
-
     </div>
   );
 };

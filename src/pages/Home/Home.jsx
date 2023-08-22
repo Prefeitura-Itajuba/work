@@ -15,7 +15,7 @@ const Home = () => {
   const { authenticated, logout } = useContext(AuthContext);
   const recoveredSession = localStorage.getItem("session");
 
-  console.log("usuario",recoveredSession)
+  // console.log("usuario",recoveredSession)
   const [listaProjeto, setListaProjeto] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
@@ -91,9 +91,9 @@ const Home = () => {
     navigate(route);
     handleDrawerClose();
   };
-  const handleQueueIconClick = (project) => {
-    console.log("Clicked Project Data:", project);
-  };
+  // const handleQueueIconClick = (project) => {
+  //   console.log("Clicked Project Data:", project);
+  // };
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -125,7 +125,7 @@ const Home = () => {
             className="input-style"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Pesquisar"
+            placeholder="Pesquisar por descrição"
           />
         </div>
 

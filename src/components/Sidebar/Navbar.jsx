@@ -9,20 +9,20 @@ import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { makeStyles } from '@mui/styles';
-import { AuthContext } from "../../context/auth"
+import { makeStyles } from "@mui/styles";
+import { AuthContext } from "../../context/auth";
 
-import { FormControl, Select } from '@mui/material';
+import { FormControl, Select } from "@mui/material";
 
-import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
-import { styled } from '@mui/system';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
+import { Avatar, Menu, MenuItem, IconButton } from "@mui/material";
+import { AccountCircle } from "@mui/icons-material";
+import { styled } from "@mui/system";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
 function Navbar() {
   const { authenticated, logout } = useContext(AuthContext);
@@ -32,7 +32,18 @@ function Navbar() {
   const showSidebar = () => setSidebar(!sidebar);
   const navigate = useNavigate();
 
+  let isAdmin = false;
+  const recoveredSession = localStorage.getItem("session");
+  if (recoveredSession) {
+    const sessionData = JSON.parse(recoveredSession);
 
+    console.log("Perfil:", sessionData.usperfil);
+    isAdmin = sessionData.usperfil === "admin";
+  } else {
+    console.log(
+      "Nenhum dado encontrado no localStorage para a chave 'session'."
+    );
+  }
 
   const SidebarData = [
     { title: "Início", path: "/home", icon: <HomeIcon />, cName: "nav-text" },
@@ -47,7 +58,7 @@ function Navbar() {
       title: "Cadastro",
       path: "/NovoUsuario",
       icon: <HowToRegIcon />,
-      cName: "nav-text"
+      cName: "nav-text",
     },
     {
       title: "Criar Secretaria",
@@ -60,39 +71,40 @@ function Navbar() {
       path: "/Departamentos",
       icon: <LogoutIcon />,
       cName: "nav-text",
-      // Cannot access 'confirmLogout' 
+      // Cannot access 'confirmLogout'
     },
     {
       title: "Tipo Projeto",
       path: "/TipoProjeto",
       icon: <LogoutIcon />,
       cName: "nav-text",
-      // Cannot access 'confirmLogout' 
+
+      // Cannot access 'confirmLogout'
     },
     {
       title: "Sair",
       icon: <LogoutIcon />,
       cName: "nav-text",
-      // Cannot access 'confirmLogout' 
+
+      // Cannot access 'confirmLogout'
     },
   ];
 
   // TESTE:
-  const UserArea = styled('div')({
-    width: '45px',
-    height: '45px',
-    position: 'relative',
-    cursor: 'pointer',
+  const UserArea = styled("div")({
+    width: "45px",
+    height: "45px",
+    position: "relative",
+    cursor: "pointer",
   });
 
   const UserAvatar = styled(Avatar)({
-    width: '100%',
-    height: '100%',
-    borderRadius: '30px',
-    border: '2px solid #fff',
-    boxShadow: '0px 0px 12px -5px #000',
+    width: "100%",
+    height: "100%",
+    borderRadius: "30px",
+    border: "2px solid #fff",
+    boxShadow: "0px 0px 12px -5px #000",
   });
-
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -122,7 +134,6 @@ function Navbar() {
     }
   }, []);
 
-
   const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -143,22 +154,22 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
           <div className="titleDiv">
-            <h1 className="txtTitle" translate="no">Workflow</h1>
+            <h1 className="txtTitle" translate="no">
+              Workflow
+            </h1>
           </div>
           <div className="dropdownDiv">
             <div className="align-end">
-
-
               <div>
                 <button
                   className="btn-dropdown"
                   id="basic-button"
-                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-controls={open ? "basic-menu" : undefined}
                   aria-haspopup="true"
-                  aria-expanded={open ? 'true' : undefined}
+                  aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
                 >
-                  <AccountCircle style={{ color: 'white', fontSize: '3rem' }} />
+                  <AccountCircle style={{ color: "white", fontSize: "3rem" }} />
                 </button>
                 <Menu
                   id="basic-menu"
@@ -166,12 +177,13 @@ function Navbar() {
                   open={open}
                   onClose={handleClose}
                   MenuListProps={{
-                    'aria-labelledby': 'basic-button',
+                    "aria-labelledby": "basic-button",
                   }}
                 >
-
                   <Link to="/AtualizarSenha">
-                    <MenuItem  style={{ color: 'black' }}>Alterar senha</MenuItem>
+                    <MenuItem style={{ color: "black" }}>
+                      Alterar senha
+                    </MenuItem>
                   </Link>
                   <MenuItem onClick={confirmLogout}>Sair</MenuItem>
                 </Menu>
@@ -191,7 +203,6 @@ function Navbar() {
                         handleCloseDialog();
                         logout();
                       }}
-
                     >
                       Sair
                     </Button>
@@ -210,6 +221,9 @@ function Navbar() {
               </Link>
             </li>
             {SidebarData.map((item, index) => {
+             if (!isAdmin && (item.title === "Cadastro" || item.title === "Criar Secretaria" || item.title === "Criar Departamento" || item.title === "Tipo Projeto")) {
+              return null; 
+            }
               return (
                 <li key={index} className={item.cName}>
                   <Link to={item.path}>
@@ -232,8 +246,7 @@ function Navbar() {
             })}
           </ul>
         </nav>
-        <div>
-        </div>
+        <div></div>
       </IconContext.Provider>
     </>
   );
