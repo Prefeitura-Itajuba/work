@@ -14,6 +14,8 @@ import QueueIcon from '@mui/icons-material/Queue';
 const Home = () => {
   const { authenticated, logout } = useContext(AuthContext);
   const recoveredSession = localStorage.getItem("session");
+
+  console.log("usuario",recoveredSession)
   const [listaProjeto, setListaProjeto] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
@@ -31,28 +33,12 @@ const Home = () => {
   };
 
   useEffect(() => {
-    api
-      .get("projetos", {
-        headers: {
-          session: recoveredSession,
-        },
-      })
-      .then((res) => {
-        console.log("lista projeto", res.data);
-        setListaProjeto(res);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
-
-  useEffect(() => {
     if (!authenticated) {
       return navigate("/");
     }
   }, []);
 
-  const { ususers } = JSON.parse(recoveredSession);
+  // const { ususers } = JSON.parse(recoveredSession);
 
   useEffect(() => {
     api
@@ -111,6 +97,7 @@ const Home = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
+
   return (
     <div>
       <Navbar />
@@ -140,10 +127,6 @@ const Home = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Pesquisar"
           />
-
-          <Button variant="contained" style={{ width: '30px', height: '42px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>
-            <SearchIcon />
-          </Button>
         </div>
 
       </div>
@@ -171,15 +154,15 @@ const Home = () => {
               listaProjeto.data &&
               listaProjeto.data.filter((projeto) => {
                 if (searchTerm === "") {
-                  return true; 
+                  return true;
                 } else if (
                   projeto.prjdescresumida
                     .toLowerCase()
                     .includes(searchTerm.toLowerCase())
                 ) {
-                  return true; 
+                  return true;
                 }
-                return false; 
+                return false;
               }).map((projeto, key) => (
                 <tr key={projeto.prjid}>
                   {/* <td>{projeto.prjid}</td> */}
@@ -191,18 +174,18 @@ const Home = () => {
                   <td>{projeto.prjvalor}</td>
 
                   <td>
-                    <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} onClick={() => handleQueueIconClick(projeto)}
-                    >
-                      <QueueIcon />
-                    </NavLink>
-                  </td>
+                    {/* to={`/detalhesLicitacoes/${projeto.prjid}`} onClick={() => handleQueueIconClick(projeto)} */}
+                  <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} state={{ dadosDoProjeto: projeto }}>
+                    <QueueIcon />
+                  </NavLink>
+                </td>
                 </tr>
               ))}
-          </tbody>
+        </tbody>
 
-        </table>
-      </div>
+      </table>
     </div>
+    </div >
   );
 };
 
@@ -225,6 +208,6 @@ export default Home;
 //   </tr>
 // ))}
 // prjstatus
-// : 
+// :
 // 0 - > verdadeiro concluido
 // 1 -> cancelado

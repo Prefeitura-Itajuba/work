@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { api } from "../../services/api";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useLocation } from "react-router-dom";
 import "./styles.css";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -9,29 +9,38 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import Navbar from "../../components/Sidebar/Navbar";
+import { TextField } from "@mui/material";
+import { format } from 'date-fns';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
-const DetalhesLicitacoes = () => {
+const DetalhesLicitacoes = (props) => {
+  const location = useLocation();
   const { projetoId } = useParams();
   const [etapaProjeto, setEtapasProjeto] = useState([]);
   const [projeto, setProjeto] = useState([]);
   const recoveredSession = localStorage.getItem("session");
   const [open, setOpen] = React.useState(false);
-
-  useEffect(() => {
-    api
-      .get(`projetos`, {
-        headers: {
-          session: recoveredSession,
-        },
-      })
-      .then((res) => {
-        console.log("projeto", res.data);
-        setProjeto(res);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  console.log('location.state =>>', location.state);
+  // useEffect(() => {
+  //   api
+  //     .get(`projetos`, {
+  //       headers: {
+  //         session: recoveredSession,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log("projeto", res.data);
+  //       setProjeto(res);
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // }, []);
 
   const [data, setData] = useState({
     etpobservacao: "",
@@ -58,6 +67,7 @@ const DetalhesLicitacoes = () => {
         console.error(error);
       });
   }, []);
+  // console.log(location.state);
 
   const alterarDados = (event) => {
     setData((prevState) => ({
@@ -70,11 +80,11 @@ const DetalhesLicitacoes = () => {
     e.preventDefault();
     const storage = localStorage.getItem("session");
     const session = JSON.parse(storage);
-    console.log({
-      ...data,
-      Usuarios_usuarioid: session.idUsuaros,
-      Projeto_id: projetoId,
-    });
+    // console.log({
+    //   ...data,
+    //   Usuarios_usuarioid: session.idUsuaros,
+    //   Projeto_id: projetoId,
+    // });
     api
       .post("etapasprojetos", {
         ...data,
@@ -95,22 +105,58 @@ const DetalhesLicitacoes = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const buttonStyle = {
-    backgroundColor: '#1a83ff',
-    fontFamily: 'Inter',
-    fontWeight: '300',
-    color: 'white',
+
+  const dialogWidth = '800px';
+  const dialogHeight = '800px'
+
+  // const dadosDoProjeto = location.state && location.state.dadosDoProjeto;
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'dd/MM/yyyy'); 
   };
-  const dialogWidth = '700px';
   return (
     <div>
       <Navbar />
       {/* {etapaProjeto.projeto_id} */}
-      <h1>Detalhes projeto</h1>
-      criar logica ao clicar em um projeto,deve mostrar somente esse
+      <div className="table">
+        <table className="custom-tables">
+        <thead>
+          <tr>
+            <th>ID SONNER: {location?.state?.dadosDoProjeto?.idSonner}</th>
+            <th>VALOR: {location?.state?.dadosDoProjeto?.prjvalor}</th>
+            <th>DES RESUMIDA: {location?.state?.dadosDoProjeto?.prjdescresumida}</th>
+            <th>DATA: {formatDate(location?.state?.dadosDoProjeto?.prjdata_inicial)}</th>
+          </tr>
+        </thead>
+          {/* prjdata_inicial */}
+          {/*  */}
+          {/* prjdata_final */}
+          {/* depNome */}
+
+          <tbody>
+            <tr>
+              {/* <td>{projeto.prjid}</td> */}
+              {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
+              <td className="testeTam">
+                {location?.state?.dadosDoProjeto && (
+                  <div>
+                    <p>Descrição Resumida: {location.state.dadosDoProjeto.prjdescricao}</p>
+                  </div>
+                )}
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+      {/* {location?.state?.dadosDoProjeto && (
+        <div>
+          <p>Descrição Resumida: {location.state.dadosDoProjeto.prjdescricao}</p>
+        </div>
+      )} */}
       <div>
         <div className="positionBtn">
-          <Button variant="outlined" onClick={handleClickOpen} style={buttonStyle}>
+          <Button variant="contained" onClick={handleClickOpen} style={{ width: '146px', height: '49px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>
             Atualizar
           </Button>
         </div>
@@ -122,6 +168,7 @@ const DetalhesLicitacoes = () => {
             style: {
               width: '100%',
               maxWidth: dialogWidth,
+              maxHeight: dialogHeight
             },
           }}
           aria-describedby="alert-dialog-description"
@@ -130,44 +177,70 @@ const DetalhesLicitacoes = () => {
             Atualizar Solicitação
           </DialogTitle>
           <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              <form autoComplete="off" onSubmit={enviarEtapa}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div className="form-section">
-                    <label className="form-label">Status</label>< br />
-                    <input className="form-input" type="text" name="etpstatus" onChange={alterarDados} />
-                  </div>
 
-                  <div className="form-section">
-                    <label className="form-label">Departamento</label>< br />
-                    <select className="form-select" name="Departamento_Depid" onChange={alterarDados}>
-                      <option value="">Selecione um departamento</option>
-                      {uniqueDepartments.map(departamento => (
-                        <option key={departamento} value={departamento}>
-                          {departamento}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+            <form autoComplete="off" onSubmit={enviarEtapa} >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <div className="form-section">
+                  <label className="form-label">Status</label>< br />
+                  <input className="full-width-input" type="text" name="etpstatus" onChange={alterarDados} />
 
-                  <div className="form-section">
-                    <label className="form-label">Observacao</label><br />
-                    <input className="form-input" type="text" name="etpobservacao" onChange={alterarDados} />
-                  </div>
-
-                  <div className="form-align-btn">
-                    <button className="form-btn" type="submit">Enviar etapa</button>
-                  </div>
                 </div>
-              </form>
-            </DialogContentText>
 
+                <div className="form-section">
+                  <label className="form-label">Departamento</label>< br />
+                  <select className="form-select full-width-input " name="Departamento_Depid" onChange={alterarDados}>
+                    <option value="">Selecione um departamento</option>
+                    {uniqueDepartments.map(departamento => (
+                      <option key={departamento} value={departamento}>
+                        {departamento}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-section">
+                  <label className="form-label">Observacao</label><br />
+                  <input className="full-width-input " type="text" name="etpobservacao" onChange={alterarDados} />
+                </div>
+
+
+                <div className="btn-container">
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleClose}
+                    autoFocus
+                    style={{
+                      width: '146px',
+                      height: '49px',
+                      textTransform: 'none',
+                      fontFamily: 'Inter',
+                      fontWeight: '300',
+                    }}
+                  >
+                    Sair
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    style={{
+                      width: '146px',
+                      height: '49px',
+                      textTransform: 'none',
+                      fontFamily: 'Inter',
+                      fontWeight: '300',
+                    }}
+                  >
+                    Atualizar
+                  </Button>
+
+                </div>
+
+              </div>
+            </form>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} autoFocus>
-              Sair
-            </Button>
-          </DialogActions>
+
+
         </Dialog>
       </div>
 
@@ -175,7 +248,7 @@ const DetalhesLicitacoes = () => {
         DETALHES ETAPA PROJETO (o que fica em baixo)
       </h2>
       <div className="table-container">
-        <table >
+        <table className="table" >
           <thead >
             <tr>
               <th>Início</th>
@@ -195,10 +268,15 @@ const DetalhesLicitacoes = () => {
                 <td>{projeto.prjvalor}</td>
               </tr>
             ))}
+
+
           </tbody>
         </table>
       </div>
+ 
       <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre>
+
+
     </div>
   );
 };

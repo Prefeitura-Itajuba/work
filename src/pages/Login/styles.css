@@ -25,6 +25,7 @@
   background-color: #f8f8fa;
   box-sizing: border-box;
   height: 100vh;
+  margin-left: 1
 }
 
 
@@ -129,6 +130,12 @@ button:hover {
   margin-top: -8px;
 }
 
+/* form{ */
+  /* display: flex; */
+  /* justify-content: center;  */
+  /* margin-left: 100%; */
+/* } */
+
 @media (max-width: 768px) {
   .input-field {
     max-width: 300px;
@@ -139,4 +146,14 @@ button:hover {
     max-width: 300px;
     /* Resto dos estilos para telas menores */
   }
+}
+
+form{
+  margin: 0;
+  padding: 0;
+}
+
+.separete{
+  display: flex;
+  justify-content: space-between;
 }

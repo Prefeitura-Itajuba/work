@@ -1,12 +1,8 @@
-#prjdescricao{
-    height: 350px;
-    width: 60%;
-
-}
 
 form{
-    margin-left: 30%;
-    margin-top: 10%
+    margin-left: 15%;
+    margin-top: 5%;
+
 }
 
 #idSonner{
@@ -19,4 +15,65 @@ form{
 
 #enviar{
     margin-left: 28%;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    /* text-align: center; */
+}
+
+input[type="text"]{
+    width: 450px;
+    background-color: #fcfcfc;
+    /* margin: 8px 0; */
+    height: 55px;
+    border-radius: 10px;
+    display: grid;
+    /* grid-template-columns: 15% 85%; */
+    padding: 0 0.4rem;
+    /* position: relative; */
+    border: 1px solid #ccc;
+    transition: #79abe4 0.3s ease;
+    margin-bottom: 15px;
+    text-align: start;
+}
+
+textarea{
+    height: 350px;
+    /* padding-bottom: 20%; */
+    line-height: 80%;
+    width: 60%;
+    margin-left: 8%;
+    resize: none;
+    border-radius: 10px;
+    background-color: #fcfcfc;
+    padding: 0 0.4rem;
+    border: 1px solid #ccc;
+    transition: #79abe4 0.3s ease;
+}
+
+#prjdescricao{
+    height: 350px;
+    /* padding-bottom: 20%; */
+    line-height: 80%;
+    width: 60%;
+    margin-left: 8%;
+    resize: none
+    
+}
+
+
+#titulo-solicitacao{
+    text-align: center;
+    margin-top: 3%;
+}
+
+select{
+    margin-bottom: 15px;
+}
+
+#coluna1{
+    column-count: 2;
+}
+
+label#prjdescricao{
+    margin-top: 5%;
 }

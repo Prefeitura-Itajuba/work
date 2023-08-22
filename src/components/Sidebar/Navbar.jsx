@@ -50,6 +50,26 @@ function Navbar() {
       cName: "nav-text"
     },
     {
+      title: "Criar Secretaria",
+      path: "/NovaSecretaria",
+      icon: <LogoutIcon />,
+      cName: "nav-text",
+    },
+    {
+      title: "Criar Departamento",
+      path: "/Departamentos",
+      icon: <LogoutIcon />,
+      cName: "nav-text",
+      // Cannot access 'confirmLogout' 
+    },
+    {
+      title: "Tipo Projeto",
+      path: "/TipoProjeto",
+      icon: <LogoutIcon />,
+      cName: "nav-text",
+      // Cannot access 'confirmLogout' 
+    },
+    {
       title: "Sair",
       icon: <LogoutIcon />,
       cName: "nav-text",
@@ -123,7 +143,7 @@ function Navbar() {
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
           <div className="titleDiv">
-            <h1 className="txtTitle">Workflow</h1>
+            <h1 className="txtTitle" translate="no">Workflow</h1>
           </div>
           <div className="dropdownDiv">
             <div className="align-end">

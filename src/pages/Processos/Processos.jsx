@@ -20,27 +20,22 @@ const Processos = () => {
   const [status, setStatus] = React.useState("");
   const [statusFilter, setStatusFilter] = useState('Em andamento');
   const [searchTerm, setSearchTerm] = useState('');
+  const [listaLicitatorio, setListaLicitatorio] = useState([]);
+  const [atualizaProcesso,setAtualizaProcesso] = useState([]);
+
   const navigate = useNavigate();
 
-  const forDate = (date) => {
-    const formattedDate = new Date(date).toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-    return formattedDate;
-  };
-
+  
   useEffect(() => {
     api
-      .get("projetos", {
+      .get("processolicitatorios", {
         headers: {
           session: recoveredSession,
         },
       })
       .then((res) => {
-        console.log("lista projeto", res.data);
-        setListaProjeto(res);
+        console.log("lista projeto licitatorios", res.data);
+        setListaLicitatorio(res);
       })
       .catch((error) => {
         console.error(error);
@@ -51,25 +46,11 @@ const Processos = () => {
     if (!authenticated) {
       return navigate("/");
     }
-  }, []);
+  }, []); 
 
-  const { ususers } = JSON.parse(recoveredSession);
+  // const { ususers } = JSON.parse(recoveredSession);
 
-  useEffect(() => {
-    api
-      .get("projetos", {
-        headers: {
-          session: recoveredSession,
-        },
-      })
-      .then((res) => {
-        setListaProjeto(res);
-        console.log("lsita projeto api get", listaProjeto);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+
 
   const handleLogout = () => {
     setLogoutDialogOpen(true);
@@ -98,7 +79,7 @@ const Processos = () => {
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    setOpen(false); 
   };
 
   const handleNavigation = (route, text) => {
@@ -110,6 +91,15 @@ const Processos = () => {
     console.log("Clicked Project Data:", project);
   };
 
+//   api.post("etapaslicitarios")
+//   .then((res) => {
+//       console.log("Secretaria Cadastrada com suceso", res,);
+//   })
+//   .catch((error) => {
+//       console.error("falha ao cadastrar a secretaria", error);
+//   });
+// };
+
 
   return (
     <div>
@@ -117,7 +107,6 @@ const Processos = () => {
       <div className="divSeparate">
         <div>
           <h1 className="h1-solicitacoes textCenter">Tela Processos</h1>
-          <b color="red">(Não está pronta,só tela fixa)</b>
         </div>
         <div className="positionInputs">
           <select
@@ -141,18 +130,11 @@ const Processos = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Pesquisar"
           />
-
-          <Button variant="contained"  style={{ width: '30px', height: '42px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>
-            <SearchIcon />
-          </Button>
         </div>
-
       </div>
       <div className="alignBtnSolicitacao">
         <Link to="/NovaSolicitacao">
-
           <Button variant="contained" style={{ width: '146px', height: '49px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>Nova solicitação</Button>
-
         </Link>
       </div>
       <div className="table">
@@ -168,21 +150,18 @@ const Processos = () => {
             </tr>
           </thead>
           <tbody>
-            {listaProjeto && listaProjeto.data && listaProjeto.data.map((projeto) => (
-              <tr key={projeto.prjid}>
-                {/* <td>{projeto.prjid}</td> */}
-                {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
-                <td>{projeto.prjdescresumida}</td>
-                <td>{projeto.idSonner}</td>
-                <td>{projeto.depNome}</td>
+            {listaLicitatorio && listaLicitatorio.data && listaLicitatorio.data.map((licitatorio) => (
+              <tr key={licitatorio.idprocessos_licitatorios}>  
+                <td>{licitatorio.licinome}</td>
+                <td>{licitatorio.licinumero}</td>
+                {/* <td>{projeto.depNome}</td>
                 <td>{projeto.tpjdescricao}</td>
-                <td>{projeto.prjvalor}</td>
-
+                <td>{projeto.prjvalor}</td> */}
                 <td>
-                  <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} onClick={() => handleQueueIconClick(projeto)}
+                  {/* <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} onClick={() => handleQueueIconClick(projeto)}
                   >
                     <QueueIcon />
-                  </NavLink>
+                  </NavLink> */}
                 </td>
               </tr>
             ))}

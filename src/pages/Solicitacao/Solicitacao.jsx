@@ -86,23 +86,19 @@ const Solicitacao = () => {
 
 <div>
 <Navbar />
+        <div id='titulo-solicitacao'>
+            <h1>
+                Nova Solicitação
+            </h1>
+        </div>
+
         <div class="table-container"> {/* Wrap the table with a container */}
             <div>
 
                 <form onSubmit={handleSubmit}>
-                    {/* <div>
-    <label htmlFor="prjid">prjid:</label>
-    <input
-      type="text"
-      id="prjid"
-      name="prjid"
-      value={formData.prjid}
-      onChange={handleChange}
-      />
-  </div> */}
-
-                    <div>
-                        <label htmlFor="idSonner">idSonner:</label>
+                   
+                    <div id='coluna1'>
+                        <label htmlFor="idSonner">Número da Solicitação</label>
                         <input
                             type="text"
                             id="idSonner"
@@ -110,7 +106,7 @@ const Solicitacao = () => {
                             value={formData.idSonner}
                             onChange={handleChange}
                         />
-                        <label htmlFor="prjdescresumida">prjdescresumida:</label>
+                        <label htmlFor="prjdescresumida">Descrição Resumida:</label>
                         <input
                             type="text"
                             id="prjdescresumida"
@@ -118,48 +114,49 @@ const Solicitacao = () => {
                             value={formData.prjdescresumida}
                             onChange={handleChange}
                         />
+                    
+                    
+
+
+                        <div>
+                            <label htmlFor="prjvalor">Valor Estimdado:</label>
+                            <input
+                                type="text"
+                                id="prjvalor"
+                                name="prjvalor"
+                                value={formData.prjvalor}
+                                onChange={handleChange}
+                                />
+                        </div>
+                        <div>
+                            <label htmlFor="tipoprojeto">Tipo da Solicitação:</label>
+                            <br />
+                            <select
+                                name="tipoprojeto"
+                                id="tipoprojeto"
+                                value={formData.tipoprojeto}
+                                onChange={handleChange}> Selecione o tipo de solicitação
+                                <option value="1">Solicitação Comum</option>
+                                <option value="2">ATA</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
+                        <div >
+                            <label htmlFor="prjdescricao" id='prjdescricao'>Descrição Detalhada:</label>
+                            <br />
+                            <textarea
+                                type="text"
+                                label="Descrição Detalhada"
+                                id="prjdescricao"
+                                name="prjdescricao"
+                                // style="resize: none"
+                                value={formData.prjdescricao}
+                                onChange={handleChange}
+                                />
+                        </div>
 
-                    </div>
-
-
-
-                    <div>
-                        <label htmlFor="prjvalor">Valor Estimdado:</label>
-                        <input
-                            type="text"
-                            id="prjvalor"
-                            name="prjvalor"
-                            value={formData.prjvalor}
-                            onChange={handleChange}
-                        />
-
-                        <select
-                            name="tipoprojeto"
-                            id="tipoprojeto"
-                            value={formData.tipoprojeto}
-                            onChange={handleChange}> Selecione o tipo de solicitação
-                            <option value="1">Solicitação Comum</option>
-                            <option value="2">ATA</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="prjdescricao"></label>
-                        <br />
-                        <input
-                            type="text"
-                            label="Descrição Detalhada"
-                            id="prjdescricao"
-                            name="prjdescricao"
-                            value={formData.prjdescricao}
-                            onChange={handleChange}
-                        />
-                    </div>
-
-
-
-                    <button id="enviar" type="submit">Salvar</button>
+                    
+                        <button id="enviar" type="submit">Salvar</button>
                 </form>
             </div>
         </div>

@@ -44,15 +44,15 @@ const AppRoutes = () => {
                     <Route exact path="/" element={<LoginPage />} />
                     <Route exact path="/home" element={<Private><Home /></Private>} />
                     <Route exact path="/NovaSolicitacao" element={<Private><Solicitacao /></Private>} />
-                    <Route exact path="/detalhesLicitacoes/:projetoId" element={<Private><DetalhesLicitacoes /></Private>} />
-                    {/* <Route path="/etapasprojetos/:id" component={EtapaProjetoDetail} /> */}
+                    <Route exact path="/detalhesLicitacoes/:projetoId" element={<Private><DetalhesLicitacoes /></Private>} />    
                     <Route exact path="/NovoUsuario" element={<Private><Cadastro /></Private>} />
                     <Route exact path="/processos" element={<Private><Processos /></Private>} />
                     <Route exact path="/NovaSecretaria" element={<Private><CriarSecretaria /></Private>} />
                     <Route exact path ="/Departamentos" element={<Private><AtualizarDepartamento /></Private>} />
                     <Route exact path ="/AtualizarSenha" element={<Private><AtualizarSenha /></Private>} />
-
+                    <Route exact path ="/TipoProjeto" element={<Private><AtualizarSenha /></Private>} />
                     {/* <Route exact path ="/NovoDepartamento" element={<Private><CriarDepartamento /></Private>} /> */}
+                      {/* <Route path="/etapasprojetos/:id" component={EtapaProjetoDetail} /> */}
                 </Routes>
             </AuthProvider>
         </Router >

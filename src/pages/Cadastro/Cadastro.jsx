@@ -7,7 +7,9 @@ import { styled, useTheme } from "@mui/material/styles";
 import { useNavigate, Link } from "react-router-dom";
 import "./styles.css";
 import Navbar from "../../components/Sidebar/Navbar";
-
+import {
+  Grid,
+} from "@mui/material";
 const Cadastro = () => {
   const [usemail, setUsemail] = useState("");
   const [ususers, setUsusers] = useState("");
@@ -103,30 +105,35 @@ const Cadastro = () => {
     logout();
   };
 
-  
+
 
   return (
     <div>
       <Navbar />
 
-      <div id="centered-form-container">
-        <h1 className="h1-solicitacoes ">Cadastro de usuário</h1>
+      <div className="divForm">
         <form className="custom-form" onSubmit={handleSubmit}>
-          <TextField
-            id="usemail"
-            label="Email"
-            type="email"
-            name="usemail"
-            value={usemail}
-            onChange={handleInputChange}
-            inputProps={{
-              autocomplete: "off",
-              form: {
-                autocomplete: "off",
-              },
-            }}
-            className="custom-textfield"
-          />
+          <div className="separete">
+            <label>Email</label>
+            <input placeholder="Email" id="usemail"
+              label="Email"
+              type="email"
+              name="usemail"
+              value={usemail}
+              onChange={handleInputChange} />
+
+          </div>
+          <div className="separete">
+            <label>Nome de</label>
+            <input placeholder="Email" id="ususers"
+            label="Nome de usuário"
+            type="text"
+            name="ususers"
+            value={ususers}
+            onChange={handleInputChange} />
+
+          </div>
+         
           <TextField
             id="ususers"
             label="Nome de usuário"
