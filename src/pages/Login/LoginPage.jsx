@@ -127,7 +127,7 @@ const LoginPage = () => {
             type="submit"
 
           >
-            Entrar
+            Entrar 
           </button>
           {/* <input
   id="ussenha"

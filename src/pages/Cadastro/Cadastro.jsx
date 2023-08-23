@@ -94,116 +94,17 @@ const Cadastro = () => {
               type="email"
               name="usemail"
               value={usemail}
-              onChange={handleInputChange} />
-
-          </div>
-          <div >
-            <label>Nome de usuário</label>
-            <input placeholder="Email" id="ususers"
-            label="Nome de usuário"
-            type="text"
-            name="ususers"
-            value={ususers}
-            onChange={handleInputChange} />
-
-          </div>
-         
-          <TextField
-            id="ususers"
-            label="Nome de usuário"
-            type="text"
-            name="ususers"
-            value={ususers}
-            onChange={handleInputChange}
-            inputProps={{
-              autocomplete: "off",
-              form: {
-                autocomplete: "off",
-              },
-            }}
-            className="custom-textfield"
-          />
-          <TextField
-            id="ussenha"
-            label="Senha"
-            type="password"
-            name="ussenha"
-            value={ussenha}
-            onChange={handleInputChange}
-            inputProps={{
-              autocomplete: "off",
-              form: {
-                autocomplete: "off",
-              },
-            }}
-          />
-          <TextField
-            id="ustelefone"
-            label="Telefone"
-            type="text"
-            name="ustelefone"
-            value={ustelefone}
-            onChange={handleInputChange}
-            inputProps={{
-              autocomplete: "off",
-              form: {
-                autocomplete: "off",
-              },
-            }}
-          ></TextField>
-          <TextField
-            id="usmatricula"
-            label="Matricula"
-            type="text"
-            name="usmatricula"
-            value={usmatricula}
-            onChange={handleInputChange}
-            inputProps={{
-              autocomplete: "off",
-              form: {
-                autocomplete: "off",
-              },
-            }}
-          />
-          <TextField
-            id="usperfil"
-            label="Perfil"
-            type="text"
-            name="usperfil"
-            value={usperfil}
-            onChange={handleInputChange}
-            inputProps={{
-              autocomplete: "off",
-              form: {
-                autocomplete: "off",
-              },
-            }}
-          />
-          <TextField
-            id="Departamento_id"
-            label="Departamento ID"
-            type="text"
-            name="Departamento_id"
-            value={Departamento_id}
-            onChange={handleInputChange}
-            inputProps={{
-              autocomplete: "off",
-              form: {
-                autocomplete: "off",
-              },
-            }}
-          />
-
-          <Button id="btn-entrar" variant="contained" size="medium" type="submit">
               onChange={handleInputChange}
               variant="outlined"
+              autoComplete="false"
               required
             />
           </FieldContainer>
+
           <FieldContainer>
-            <CustomLabel>Nome de Usuário</CustomLabel>
+            <CustomLabel>Nome de usuário</CustomLabel>
             <CustomTextField
-              label="Nome de Usuário"
+              label="Email"
               type="text"
               name="ususers"
               value={ususers}
@@ -213,70 +114,90 @@ const Cadastro = () => {
               required
             />
           </FieldContainer>
+
           <FieldContainer>
             <CustomLabel>Senha</CustomLabel>
             <CustomTextField
+              id="ussenha"
               label="Senha"
-              required
               type="password"
               name="ussenha"
               value={ussenha}
               onChange={handleInputChange}
               variant="outlined"
+              autoComplete="false"
+              required
             />
           </FieldContainer>
+
           <FieldContainer>
             <CustomLabel>Telefone</CustomLabel>
             <CustomTextField
+              id="ustelefone"
               label="Telefone"
               type="text"
               name="ustelefone"
               value={ustelefone}
               onChange={handleInputChange}
               variant="outlined"
+              autoComplete="false"
               required
             />
           </FieldContainer>
+
           <FieldContainer>
-            <CustomLabel>Matrícula</CustomLabel>
+            <CustomLabel>Matricula</CustomLabel>
             <CustomTextField
-              required
+              id="usmatricula"
               label="Matricula"
               type="text"
               name="usmatricula"
               value={usmatricula}
               onChange={handleInputChange}
               variant="outlined"
+              autoComplete="false"
+              required
             />
           </FieldContainer>
+
           <FieldContainer>
             <CustomLabel>Perfil</CustomLabel>
             <CustomTextField
-              required
+              id="usperfil"
               label="Perfil"
               type="text"
               name="usperfil"
               value={usperfil}
               onChange={handleInputChange}
               variant="outlined"
+              autoComplete="false"
+              required
             />
           </FieldContainer>
+
           <FieldContainer>
-            <CustomLabel>Departamento ID</CustomLabel>
-            <CustomTextField
-              label="Departamento ID"
-              type="text"
-              name="Departamento_id"
-              value={Departamento_id}
-              onChange={handleInputChange}
-              variant="outlined"
-            />
+            <CustomLabel>   
+               <FieldContainer>
+              <CustomLabel>Perfil</CustomLabel>
+              <CustomTextField
+                id="Departamento_id"
+                label="Departamento ID"
+                type="text"
+                name="Departamento_id"
+                value={Departamento_id}
+                onChange={handleInputChange}
+                variant="outlined"
+                autoComplete="false"
+                required
+              />
+            </FieldContainer></CustomLabel>
+
+          
           </FieldContainer>
-          <CenterBtn>
-          <StyledButton id="btn-entrar" variant="contained" size="medium" type="submit">
-            Cadastrar
-          </StyledButton>
-          </CenterBtn>
+          <Button id="btn-entrar" variant="contained" size="medium" type="submit" onChange={handleInputChange}
+              required>
+              Criar
+            </Button>
         </CustomForm>
       </CenteredFormContainer>
     </div>
