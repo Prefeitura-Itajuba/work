@@ -22,9 +22,10 @@ import {
   StyledButton,
   Th,
   Td,
-  TbodyTr ,
+  TbodyTr,
   PositionBtn,
   PositionCtn,
+  TableSeparator,
   SeparateBtn
 } from './styles';
 
@@ -36,7 +37,7 @@ const DetalhesLicitacoes = (props) => {
   const [projeto, setProjeto] = useState([]);
   const recoveredSession = localStorage.getItem("session");
   const [open, setOpen] = useState(false);
-  const [delProjeto,setDelProjeto] = useState([])
+  const [delProjeto, setDelProjeto] = useState([])
 
   console.log("location.state =>>", location.state);
   // useEffect(() => {
@@ -70,15 +71,15 @@ const DetalhesLicitacoes = (props) => {
     retorna: "retorna",
   };
 
-  const handleDelete =  () =>{
+  const handleDelete = () => {
     api
-    .get(`etapasprojetos/${projetoId}`)
-    .then((res) => {
-      setEtapasProjeto(res.data);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+      .get(`etapasprojetos/${projetoId}`)
+      .then((res) => {
+        setEtapasProjeto(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }
 
   useEffect(() => {
@@ -134,12 +135,6 @@ const DetalhesLicitacoes = (props) => {
     return format(date, 'dd/MM/yyyy');
   };
 
-  // TESRE
-  const dataS = [
-    { id: 1, name: 'Item 1', quantity: 5 },
-    { id: 2, name: 'Item 2', quantity: 10 },
-    { id: 3, name: 'Item 3', quantity: 2 },
-  ];
 
   return (
     <div>
@@ -244,55 +239,37 @@ const DetalhesLicitacoes = (props) => {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="table-container">
-        <table className="table">
+    
+      <TableContainer>
+        <Table>
           <thead>
             <tr>
-              <th>Início</th>
-              <th>Término</th>
-              <th>Dias Decorridos </th>
-              <th>Departamento</th>
-              <th>Status</th>
-              <th>Usuário</th>
+              <Th>Início</Th>
+              <Th>Término</Th>
+              <Th>Dias Decorridos</Th>
+              <Th>Departamento</Th>
+              <Th>Status</Th>
+              <Th>Usuário</Th>
             </tr>
           </thead>
           <tbody>
-            {etapaProjeto.map((projeto) => (
-              <tr key={projeto}>
-                <td>{projeto.etpdata}</td>
-                <td>{projeto.idSonner}</td>
-                <td>{projeto.depNome}</td>
-                <td>{projeto.prjvalor}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            <TbodyTr>
+              {etapaProjeto.map((projeto) => (
+                <tr key={projeto}>
+                  <Td>{projeto.etpdata}</Td>
+                  <Td>{projeto.idSonner}</Td>
+                  <Td>{projeto.depNome}</Td>
+                  <Td>{projeto.prjvalor}</Td>
+                </tr>
+              ))}
 
-      <TableContainer>
-      <Table>
-        <thead>
-          <tr>
-            <Th>Header 1</Th>
-            <Th>Header 2</Th>
-            <Th>Header 3</Th>
-            <Th>Header 4</Th>
-            <Th>Header 5</Th>
-          </tr>
-        </thead>
-        <tbody>
-          <TbodyTr>
-            <Td>Data 1</Td>
-            <Td>Data 2</Td>
-            <Td>Data 3</Td>
-            <Td>Data 4</Td>
-            <Td>Data 5</Td>
-          </TbodyTr>
-          {/* Add more rows here */}
-        </tbody>
-      </Table>
-    </TableContainer>
-      <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre>
+            </TbodyTr>
+          </tbody>
+        </Table>
+        <TableSeparator />
+      </TableContainer>
+
+      {/* <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre> */}
     </div>
   );
 };

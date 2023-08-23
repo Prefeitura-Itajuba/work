@@ -100,6 +100,7 @@ export const Th = styled.th`
   text-align: left;
   position: relative;
   background-color: #f2f2f2;
+  height: 20px;
   font-weight: bold;
 `;
 
@@ -107,13 +108,14 @@ export const Td = styled.td`
   padding: 10px;
   text-align: left;
   position: relative;
+  height: 30px;
 
   &:nth-child(5) {
-    font-weight: bold;
+    /* font-weight: bold; */
   }
 
   &:first-child {
-    font-weight: bold;
+    /* font-weight: bold; */
   }
 
   &:last-child {
@@ -124,6 +126,7 @@ export const Td = styled.td`
 export const TbodyTr = styled.tr`
   background-color: #fff;
   height: 20px; 
+  
 `;
 
 export const TableSeparator = styled.div`

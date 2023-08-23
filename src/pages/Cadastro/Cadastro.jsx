@@ -194,10 +194,12 @@ const Cadastro = () => {
 
           
           </FieldContainer>
+          <CenterBtn>
           <Button id="btn-entrar" variant="contained" size="medium" type="submit" onChange={handleInputChange}
               required>
               Criar
             </Button>
+            </CenterBtn>
         </CustomForm>
       </CenteredFormContainer>
     </div>
