@@ -56,16 +56,16 @@ const LoginPage = () => {
   }, [authenticated, navigate, usemail, ussenha]);
 
   return (
-    <div class="container">
-      <div class="image-container">
+    <div className="container">
+      <div className="image-container">
         <img src={Imagem} alt="background" className="background-image" />
       </div>
-      <div class="login-container">
+      <div className="login-container">
         <img src={Logo} alt="background" className="logo-bg" />
         <form className="form" onSubmit={handleSubmit} >
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <div class="input-field">
+              <div className="input-field">
                 <i className={`fas fa-user icon ${bothFieldsFilled ? "blue" : ""}`}></i>
                 <input
                   id="usemail"
@@ -74,15 +74,14 @@ const LoginPage = () => {
                   type="email"
                   name="usemail"
                   value={usemail}
-                  className="teste"
                   onChange={(e) => setEmail(e.target.value)}
-                  class="input-field"
+                  className="input-field"
                   style={{ width: "200px", marginBottom: "20px", height: "45px" }}
                 />
               </div>
             </Grid>
             <Grid item xs={12}>
-              <div class="input-field">
+              <div className="input-field">
                 <FontAwesomeIcon
                   icon={passwordVisible ? faEye : faEyeSlash}
                   className={`icon iconEye ${bothFieldsFilled ? "blue" : ""}`}
@@ -98,7 +97,7 @@ const LoginPage = () => {
                   placeholder="Senha"
                   name="ussenha"
                   value={ussenha}
-                  class="input-field"
+                  className="input-field"
                   onChange={(e) => setPassword(e.target.value)}
                   type={passwordVisible ? "text" : "password"}
                   style={{ width: "200px", marginBottom: "20px", height: "45px" }}

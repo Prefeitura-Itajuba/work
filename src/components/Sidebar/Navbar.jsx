@@ -9,20 +9,21 @@ import HomeIcon from "@mui/icons-material/Home";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { makeStyles } from "@mui/styles";
-import { AuthContext } from "../../context/auth";
-
-import { FormControl, Select } from "@mui/material";
-
-import { Avatar, Menu, MenuItem, IconButton } from "@mui/material";
-import { AccountCircle } from "@mui/icons-material";
-import { styled } from "@mui/system";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
+import { makeStyles } from '@mui/styles';
+import { AuthContext } from "../../context/auth"
+import { FormControl, Select } from '@mui/material';
+import { Avatar, Menu, MenuItem, IconButton } from '@mui/material';
+import { AccountCircle } from '@mui/icons-material';
+import { styled } from '@mui/system';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import CreateIcon from '@mui/icons-material/Create';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 function Navbar() {
   const { authenticated, logout } = useContext(AuthContext);
@@ -63,20 +64,20 @@ function Navbar() {
     {
       title: "Criar Secretaria",
       path: "/NovaSecretaria",
-      icon: <LogoutIcon />,
+      icon: <CreateIcon />,
       cName: "nav-text",
     },
     {
       title: "Criar Departamento",
       path: "/Departamentos",
-      icon: <LogoutIcon />,
+      icon: <AutoAwesomeMosaicIcon />,
       cName: "nav-text",
       // Cannot access 'confirmLogout'
     },
     {
       title: "Tipo Projeto",
       path: "/TipoProjeto",
-      icon: <LogoutIcon />,
+      icon: <DescriptionIcon />,
       cName: "nav-text",
 
       // Cannot access 'confirmLogout'

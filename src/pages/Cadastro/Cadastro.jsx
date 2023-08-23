@@ -2,14 +2,18 @@ import { Button } from "@mui/material";
 import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { api } from "../../services/api";
-
-import { styled, useTheme } from "@mui/material/styles";
-import { useNavigate, Link } from "react-router-dom";
-import "./styles.css";
-import Navbar from "../../components/Sidebar/Navbar";
 import {
-  Grid,
-} from "@mui/material";
+  CenteredFormContainer,
+  CustomForm,
+  FieldContainer,
+  CustomLabel,
+  CustomTextField,
+  StyledButton,
+  Title,
+  CenterBtn
+} from './styles';
+import Navbar from "../../components/Sidebar/Navbar";
+
 const Cadastro = () => {
   const [usemail, setUsemail] = useState("");
   const [ususers, setUsusers] = useState("");
@@ -18,8 +22,7 @@ const Cadastro = () => {
   const [usmatricula, setUsmatricula] = useState("");
   const [usperfil, setUsperfil] = useState("");
   const [Departamento_id, setDepartamento_id] = useState("");
-  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
-  const [selectedMenuItem, setSelectedMenuItem] = useState("Início");
+
   const recoveredSession = localStorage.getItem("session");
 
   const { ususerss } = JSON.parse(recoveredSession);
@@ -76,46 +79,17 @@ const Cadastro = () => {
     }
   };
 
-  ////
-  const navigate = useNavigate();
-
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
-  const handleNavigation = (route, text) => {
-    setSelectedMenuItem(text);
-    navigate(route);
-    handleDrawerClose();
-  };
-
-  const handleLogout = () => {
-    setLogoutDialogOpen(true);
-  };
-
-  const confirmLogout = () => {
-    setLogoutDialogOpen(false);
-    logout();
-  };
-
 
 
   return (
     <div>
       <Navbar />
-
-      <div className="divForm">
-        <form className="custom-form" onSubmit={handleSubmit}>
-          <div>
-            <label>Email</label>
-            <input placeholder="Email" id="usemail"
+      <Title> <p>Cadastro</p></Title>
+      <CenteredFormContainer>
+        <CustomForm onSubmit={handleSubmit} autoComplete="off">
+          <FieldContainer>
+            <CustomLabel>Email</CustomLabel>
+            <CustomTextField
               label="Email"
               type="email"
               name="usemail"
@@ -221,10 +195,90 @@ const Cadastro = () => {
           />
 
           <Button id="btn-entrar" variant="contained" size="medium" type="submit">
+              onChange={handleInputChange}
+              variant="outlined"
+              required
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <CustomLabel>Nome de Usuário</CustomLabel>
+            <CustomTextField
+              label="Nome de Usuário"
+              type="text"
+              name="ususers"
+              value={ususers}
+              onChange={handleInputChange}
+              variant="outlined"
+              autoComplete="false"
+              required
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <CustomLabel>Senha</CustomLabel>
+            <CustomTextField
+              label="Senha"
+              required
+              type="password"
+              name="ussenha"
+              value={ussenha}
+              onChange={handleInputChange}
+              variant="outlined"
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <CustomLabel>Telefone</CustomLabel>
+            <CustomTextField
+              label="Telefone"
+              type="text"
+              name="ustelefone"
+              value={ustelefone}
+              onChange={handleInputChange}
+              variant="outlined"
+              required
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <CustomLabel>Matrícula</CustomLabel>
+            <CustomTextField
+              required
+              label="Matricula"
+              type="text"
+              name="usmatricula"
+              value={usmatricula}
+              onChange={handleInputChange}
+              variant="outlined"
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <CustomLabel>Perfil</CustomLabel>
+            <CustomTextField
+              required
+              label="Perfil"
+              type="text"
+              name="usperfil"
+              value={usperfil}
+              onChange={handleInputChange}
+              variant="outlined"
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <CustomLabel>Departamento ID</CustomLabel>
+            <CustomTextField
+              label="Departamento ID"
+              type="text"
+              name="Departamento_id"
+              value={Departamento_id}
+              onChange={handleInputChange}
+              variant="outlined"
+            />
+          </FieldContainer>
+          <CenterBtn>
+          <StyledButton id="btn-entrar" variant="contained" size="medium" type="submit">
             Cadastrar
-          </Button>
-        </form>
-      </div>
+          </StyledButton>
+          </CenterBtn>
+        </CustomForm>
+      </CenteredFormContainer>
     </div>
   );
 };

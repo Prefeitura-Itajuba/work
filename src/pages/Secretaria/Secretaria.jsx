@@ -6,6 +6,16 @@ import { useNavigate, Link } from "react-router-dom";
 import Navbar from "../../components/Sidebar/Navbar";
 import { useState } from "react"
 
+import {
+    CenteredFormContainer,
+    CustomForm,
+    FieldContainer,
+    CustomLabel,
+    CustomTextField,
+    StyledButton,
+    Title,
+    CenterBtn
+  } from './styles';
 
 import { styled, useTheme } from '@mui/material/styles';
 const CriarSecretaria = () => {
@@ -69,20 +79,75 @@ const CriarSecretaria = () => {
         handleDrawerClose();
     };
 
- 
+
 
     return (
 
-       <div>
-        <Navbar />
-        <div>Secretaria</div>
         <div>
-            <form action="">
-                <input type="text" />
-                <input type="text" />
-            </form>
+            <Navbar />
+            <div>
+                <Title>Criar Secretaria</Title>
+            </div>
+            {/* <div>
+                <form onSubmi={handleSubmit}>
+                    <input type="text"
+                        Label="secsigla"
+                        id="secsigla"
+                        name="secsigla"
+                        value={secsigla}
+                        onChange={handleInputChange}
+                        placeholder="Escreva a Sigla da Secretaria"
+                    />
+                    <input type="text"
+                        Label="secnome"
+                        id="secnome"
+                        name="secnome"
+                        value={secnome}
+                        onChange={handleInputChange}
+                        placeholder="Escreva o nome da secretaria"
+                    />
+
+                    <button onClick={handleSubmit} >Criar</button>
+                </form>
+            </div> */}
+
+<CenteredFormContainer>
+        <CustomForm onSubmit={handleSubmit} autoComplete="off">
+          <FieldContainer>
+            <CustomLabel>Sigla</CustomLabel>
+            <CustomTextField
+                Label="secsigla"
+                type="text"
+                id="secsigla"
+                name="secsigla"
+                value={secsigla}
+                onChange={handleInputChange}
+                placeholder="Escreva a Sigla da Secretaria"
+                required
+            />
+          </FieldContainer>
+          <FieldContainer>
+            <CustomLabel>Nome </CustomLabel>
+            <CustomTextField
+            type="text"
+            Label="secnome"
+            id="secnome"
+            name="secnome"
+            value={secnome}
+            onChange={handleInputChange}
+            placeholder="Escreva o nome da secretaria"
+            />
+          </FieldContainer>
+          
+         
+          <CenterBtn>
+          <StyledButton id="btn-entrar" variant="contained" size="medium" type="submit">
+           Criar
+          </StyledButton>
+          </CenterBtn>
+        </CustomForm>
+      </CenteredFormContainer>
         </div>
-       </div>
     );
 };
 

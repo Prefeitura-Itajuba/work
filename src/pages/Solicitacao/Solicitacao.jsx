@@ -1,31 +1,24 @@
-import React, { useContext } from "react";
-import { Button } from "@mui/material";
-import { AuthContext } from "../../context/auth";
-import { TextField } from "@mui/material";
-import { api } from "../../services/api"
-import AppRoutes from "../../router/AppRoutes";
-import { useNavigate, Link } from "react-router-dom";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { useState } from "react";
+import React, { useState } from "react";
+import { Button, TextField, FormControl, InputLabel, MenuItem } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../services/api";
 import Navbar from "../../components/Sidebar/Navbar";
-
-import { styled, useTheme } from '@mui/material/styles';
-import "./styles.css"
-
+import {
+    TituloSolicitacao,
+    Coluna1,
+    Form,
+    TextArea,
+    Select,
+    InputText,
+    CenterBtn
+} from './styles.js';
 
 const Solicitacao = () => {
-
     const dataHoje = new Date();
-    const idRecuperado = localStorage.getItem("session");
-    console.log(JSON.parse(idRecuperado));
-    const { idUsuaros } = JSON.parse(idRecuperado);
-
+    const idRecuperado = JSON.parse(localStorage.getItem("session"));
+    const { idUsuaros } = idRecuperado;
 
     const [formData, setFormData] = useState({
-        // prjid: "",
         idSonner: "",
         prjdata_inicial: dataHoje,
         prjdescricao: "",
@@ -37,8 +30,6 @@ const Solicitacao = () => {
         prjvalor: "",
         tipoprojeto: ""
     });
-    // console.log(formData.tipoprojeto);
-    // console.log(formData.Usuario_id);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -47,7 +38,6 @@ const Solicitacao = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Aqui você pode fazer a chamada à API para salvar os dados
         api
             .post("projetos", formData)
             .then((res) => {
@@ -58,112 +48,74 @@ const Solicitacao = () => {
             });
     };
 
-
-
-
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
-
-    const handleNavigation = (route) => {
-        navigate(route);
-        handleDrawerClose();
-    };
-
     const navigate = useNavigate();
 
-
-
     return (
+        <div>
+            <Navbar />
+            <TituloSolicitacao>
+                <p>Nova Solicitação</p>
+            </TituloSolicitacao>
 
-
-<div>
-<Navbar />
-        <div id='titulo-solicitacao'>
-            <h1>
-                Nova Solicitação
-            </h1>
-        </div>
-
-        <div class="table-container"> {/* Wrap the table with a container */}
-            <div>
-
-                <form onSubmit={handleSubmit}>
-                   
-                    <div id='coluna1'>
-                        <label htmlFor="idSonner">Número da Solicitação</label>
-                        <input
-                            type="text"
+            <div className="table-container">
+                <Form onSubmit={handleSubmit}>
+                    <Coluna1>
+                        <InputText
+                            label="Número da Solicitação"
                             id="idSonner"
                             name="idSonner"
                             value={formData.idSonner}
+                            placeholder="Número da Solicitação"
                             onChange={handleChange}
                         />
-                        <label htmlFor="prjdescresumida">Descrição Resumida:</label>
-                        <input
-                            type="text"
+                        <InputText
+                            label="Descrição Resumida:"
                             id="prjdescresumida"
                             name="prjdescresumida"
+                            placeholder="Descrição Resumida"
                             value={formData.prjdescresumida}
                             onChange={handleChange}
                         />
-                    
-                    
-
-
-                        <div>
-                            <label htmlFor="prjvalor">Valor Estimdado:</label>
-                            <input
-                                type="text"
-                                id="prjvalor"
-                                name="prjvalor"
-                                value={formData.prjvalor}
-                                onChange={handleChange}
-                                />
-                        </div>
-                        <div>
-                            <label htmlFor="tipoprojeto">Tipo da Solicitação:</label>
-                            <br />
-                            <select
-                                name="tipoprojeto"
+                        <InputText
+                            label="Valor Estimado:"
+                            placeholder="Valor Estimado"
+                            id="prjvalor"
+                            name="prjvalor"
+                            value={formData.prjvalor}
+                            onChange={handleChange}
+                        />
+                        <FormControl>
+                            <Select
+                                label="Tipo da Solicitação"
                                 id="tipoprojeto"
+                                name="tipoprojeto"
                                 value={formData.tipoprojeto}
-                                onChange={handleChange}> Selecione o tipo de solicitação
+                                onChange={handleChange}
+                            >
                                 <option value="1">Solicitação Comum</option>
                                 <option value="2">ATA</option>
-                            </select>
-                        </div>
+                            </Select>
+                        </FormControl>
+                    </Coluna1>
+                    <div>
+                        <TextArea
+                            multiline
+                            label="Descrição Detalhada:"
+                            placeholder="Descrição Detalhada"
+                            id="prjdescricao"
+                            name="prjdescricao"
+                            value={formData.prjdescricao}
+                            onChange={handleChange}
+                            // style={Padding: "0, 0, 1px"}
+                        />
+                        <CenterBtn>
+                            <Button type="submit" variant="contained">Salvar</Button>
+                        </CenterBtn>
                     </div>
-                        <div >
-                            <label htmlFor="prjdescricao" id='prjdescricao'>Descrição Detalhada:</label>
-                            <br />
-                            <textarea
-                                type="text"
-                                label="Descrição Detalhada"
-                                id="prjdescricao"
-                                name="prjdescricao"
-                                // style="resize: none"
-                                value={formData.prjdescricao}
-                                onChange={handleChange}
-                                />
-                        </div>
-
-                    
-                        <button id="enviar" type="submit">Salvar</button>
-                </form>
+                </Form>
             </div>
         </div>
-</div>
-
     );
 };
-
 
 export default Solicitacao;

@@ -1,22 +1,33 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { api } from "../../services/api";
 import { useParams, NavLink, useLocation } from "react-router-dom";
-import "./styles.css";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Button from "@mui/material/Button";
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 import Navbar from "../../components/Sidebar/Navbar";
 import { TextField } from "@mui/material";
-import { format } from "date-fns";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+
+import { format } from 'date-fns';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+
+import {
+  CenteredFormContainer,
+  CustomForm,
+  FieldContainer,
+  CustomLabel,
+  CustomTextField,
+  StyledButton,
+  Th,
+  Td,
+  TbodyTr ,
+  PositionBtn,
+  PositionCtn,
+  SeparateBtn
+} from './styles';
+
 
 const DetalhesLicitacoes = (props) => {
   const location = useLocation();
@@ -117,86 +128,53 @@ const DetalhesLicitacoes = (props) => {
   const dialogWidth = "800px";
   const dialogHeight = "800px";
 
-  // const dadosDoProjeto = location.state && location.state.dadosDoProjeto;
+  const dadosDoProjeto = location.state && location.state.dadosDoProjeto;
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return format(date, "dd/MM/yyyy");
+    return format(date, 'dd/MM/yyyy');
   };
 
-  useEffect(() => {
-    api
-      .delete(`/projeto/${projetoId}`)
-      .then((res) => {
-        setDelProjeto(res)
-       console.log("deletou")
-      })
-      .catch((error) => {
-        console.log("ERRO",error)
-      });
-  }, []);
+  // TESRE
+  const dataS = [
+    { id: 1, name: 'Item 1', quantity: 5 },
+    { id: 2, name: 'Item 2', quantity: 10 },
+    { id: 3, name: 'Item 3', quantity: 2 },
+  ];
+
   return (
     <div>
       <Navbar />
-      {/* {etapaProjeto.projeto_id} */}
-      <div className="table">
-        <table className="custom-tables">
-          <thead>
-            <tr>
-              <th>ID SONNER: {location?.state?.dadosDoProjeto?.idSonner}</th>
-              <th>VALOR: {location?.state?.dadosDoProjeto?.prjvalor}</th>
-              <th>
-                DES RESUMIDA: {location?.state?.dadosDoProjeto?.prjdescresumida}
-              </th>
-              <th>
-                DATA:{" "}
-                {formatDate(location?.state?.dadosDoProjeto?.prjdata_inicial)}
-              </th>
-            </tr>
-          </thead>
-          {/* prjdata_inicial */}
-          {/*  */}
-          {/* prjdata_final */}
-          {/* depNome */}
+      <PositionCtn>
+        <TableContainer component={Paper}>
+          <Table className="custom-tables">
+            <TableHead>
+              <TableRow>
+                <TableCell><b>ID SONNER:</b> {location?.state?.dadosDoProjeto?.idSonner}</TableCell>
+                <TableCell><b>VALOR:</b> {location?.state?.dadosDoProjeto?.prjvalor}</TableCell>
+                <TableCell><b>DESC RESUMIDA:</b> {location?.state?.dadosDoProjeto?.prjdescresumida}</TableCell>
+                <TableCell><b>DATA:</b> {formatDate(location?.state?.dadosDoProjeto?.prjdata_inicial)}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell className="testeTam" colSpan={4} style={{ padding: '100px', borderLeft: '5px solid #dddddd' }}>
+                  {dadosDoProjeto && (
 
-          <tbody>
-            <tr>
-              {/* <td>{projeto.prjid}</td> */}
-              {/* <td>{forDate(projeto.prjdata_inicial)}</td> */}
-              <td className="testeTam">
-                {location?.state?.dadosDoProjeto && (
-                  <div>
-                    <p>
-                      Descrição Resumida:{" "}
-                      {location.state.dadosDoProjeto.prjdescricao}
-                    </p>
-                  </div>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {/* {location?.state?.dadosDoProjeto && (
-        <div>
-          <p>Descrição Resumida: {location.state.dadosDoProjeto.prjdescricao}</p>
-        </div>
-      )} */}
+                    <p>Descrição Resumida: {location.state.dadosDoProjeto.prjdescricao}</p>
+
+                  )}
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </PositionCtn>
       <div>
-        <div className="positionBtn">
-          <Button
-            variant="contained"
-            onClick={handleClickOpen}
-            style={{
-              width: "146px",
-              height: "49px",
-              textTransform: "none",
-              fontFamily: "Inter",
-              fontWeight: "300",
-            }}
-          >
-            Atualizar etapa projeto
+        <PositionBtn>
+          <Button variant="contained" onClick={handleClickOpen} style={{ width: '146px', height: '49px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>
+            Atualizar
           </Button>
-        </div>
+        </PositionBtn>
         <Dialog
           open={open}
           onClose={handleClose}
@@ -214,24 +192,21 @@ const DetalhesLicitacoes = (props) => {
             Atualizar Solicitação
           </DialogTitle>
           <DialogContent>
-            <form autoComplete="off" onSubmit={enviarEtapa}>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <div className="form-section">
-                  <label className="form-label">Status</label>
-                  <br />
-                  <input
-                    className="full-width-input"
+
+            <CenteredFormContainer>
+              <CustomForm autoComplete="off" onSubmit={enviarEtapa}>
+                <FieldContainer>
+                  <CustomLabel>Status</CustomLabel>
+                  <CustomTextField
                     type="text"
                     name="etpstatus"
                     onChange={alterarDados}
                   />
-                </div>
-
-                <div className="form-section">
-                  <label className="form-label">Departamento</label>
-                  <br />
-                  <select
-                    className="form-select full-width-input "
+                </FieldContainer>
+                <FieldContainer>
+                  <CustomLabel>Departamento</CustomLabel>
+                  <CustomTextField
+                    as="select"
                     name="Departamento_Depid"
                     onChange={alterarDados}
                   >
@@ -241,88 +216,34 @@ const DetalhesLicitacoes = (props) => {
                         {departamento}
                       </option>
                     ))}
-                  </select>
-                </div>
-
-                <div className="form-section">
-                  <label className="form-label">Observacao</label>
-                  <br />
-                  <input
-                    className="full-width-input "
+                  </CustomTextField>
+                </FieldContainer>
+                <FieldContainer>
+                  <CustomLabel>Observação</CustomLabel>
+                  <CustomTextField
                     type="text"
                     name="etpobservacao"
                     onChange={alterarDados}
                   />
-                </div>
-
-                <div className="btn-container">
-                  <Button
+                </FieldContainer>
+                <SeparateBtn>
+                  <StyledButton
                     variant="outlined"
                     color="error"
                     onClick={handleClose}
                     autoFocus
-                    style={{
-                      width: "146px",
-                      height: "49px",
-                      textTransform: "none",
-                      fontFamily: "Inter",
-                      fontWeight: "300",
-                    }}
                   >
                     Sair
-                  </Button>
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    style={{
-                      width: "146px",
-                      height: "49px",
-                      textTransform: "none",
-                      fontFamily: "Inter",
-                      fontWeight: "300",
-                    }}
-                  >
+                  </StyledButton>
+                  <StyledButton variant="contained" type="submit">
                     Atualizar
-                  </Button>
-                </div>
-              </div>
-            </form>
+                  </StyledButton>
+                </SeparateBtn>
+              </CustomForm>
+            </CenteredFormContainer>
           </DialogContent>
         </Dialog>
       </div>
-
-      <Button
-        variant="contained"
-        color="error"
-        type="submit"
-        onClick={handleDelete}
-        style={{
-          width: "146px",
-          height: "49px",
-          textTransform: "none",
-          fontFamily: "Inter",
-          fontWeight: "300",
-        }}
-      >
-        Deletar
-      </Button>
-      <Button
-        variant="outlined"
-        type="submit"
-        style={{
-          width: "146px",
-          height: "49px",
-          textTransform: "none",
-          fontFamily: "Inter",
-          fontWeight: "300",
-        }}
-      >
-        Atualizar
-      </Button>
-
-      <h2 className="testeTitulo">
-        DETALHES ETAPA PROJETO (o que fica em baixo)
-      </h2>
       <div className="table-container">
         <table className="table">
           <thead>
@@ -348,6 +269,29 @@ const DetalhesLicitacoes = (props) => {
         </table>
       </div>
 
+      <TableContainer>
+      <Table>
+        <thead>
+          <tr>
+            <Th>Header 1</Th>
+            <Th>Header 2</Th>
+            <Th>Header 3</Th>
+            <Th>Header 4</Th>
+            <Th>Header 5</Th>
+          </tr>
+        </thead>
+        <tbody>
+          <TbodyTr>
+            <Td>Data 1</Td>
+            <Td>Data 2</Td>
+            <Td>Data 3</Td>
+            <Td>Data 4</Td>
+            <Td>Data 5</Td>
+          </TbodyTr>
+          {/* Add more rows here */}
+        </tbody>
+      </Table>
+    </TableContainer>
       <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre>
     </div>
   );

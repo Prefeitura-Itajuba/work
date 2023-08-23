@@ -4,6 +4,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    
   }
   
   .menu-bars {
@@ -160,4 +161,10 @@
     background-color: transparent;
     color: black;
   
+  }
+
+
+  button{
+    border: none;
+    cursor: pointer;
   }
