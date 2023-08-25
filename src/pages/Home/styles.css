@@ -25,11 +25,11 @@ table {
   }
   
   td:first-child {
-    border-left: 6px solid #cccccc; /* Adiciona borda lateral apenas na primeira célula de cada linha */
+    border-left: 6px solid #cccccc; 
   }
   
   th:first-child {
-    border-left: none; /* Remove a borda lateral da primeira célula da linha de cabeçalho */
+    border-left: none;
   }
   
   tbody tr:last-child td {
@@ -97,14 +97,7 @@ table {
   button:hover {
    background: #193c5b;
   } 
-  /* .input-style{
-    height: 30px;
-    outline: none;
-  }
-  select{
-    height: 32px;
-    width: 180px;
-  } */
+
   .alignBtnSolicitacao{
     display: flex;
     align-items: flex-end;

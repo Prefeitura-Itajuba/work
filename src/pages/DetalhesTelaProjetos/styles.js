@@ -109,7 +109,6 @@ export const Td = styled.td`
   text-align: left;
   position: relative;
   height: 30px;
-  border: 1px solid #dcdcdc;
 
   &:nth-child(5) {
     /* font-weight: bold; */

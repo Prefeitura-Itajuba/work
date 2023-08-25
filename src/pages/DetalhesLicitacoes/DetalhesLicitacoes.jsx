@@ -39,7 +39,10 @@ const DetalhesLicitacoes = (props) => {
   const [open, setOpen] = useState(false);
   const [delProjeto, setDelProjeto] = useState([])
 
-  console.log("location.state =>>", location.state);
+  const [solicitacaoInclusa, setsolicitacaoInclusa] = useState([])
+
+  // console.log("location.state =>>", location.state);
+  
   // useEffect(() => {
   //   api
   //     .get(`projetos`, {
@@ -76,6 +79,7 @@ const DetalhesLicitacoes = (props) => {
       .get(`etapasprojetos/${projetoId}`)
       .then((res) => {
         setEtapasProjeto(res.data);
+        console.log("etapaProjeto:",etapaProjeto)
       })
       .catch((error) => {
         console.error(error);
@@ -134,7 +138,25 @@ const DetalhesLicitacoes = (props) => {
     const date = new Date(dateString);
     return format(date, 'dd/MM/yyyy');
   };
+  // const [solicitacaoInclusa, setsolicitacaoInclusa] = useState([])
+//   const recoveredSession = localStorage.getItem("session");
 
+
+useEffect(() => {
+  api
+  .get("projetos", {
+    headers: {
+      session: recoveredSession,
+    },
+  })
+  .then((res) => {
+    setsolicitacaoInclusa(res);
+    // console.log("consolet", solicitacaoInclusa);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+},[])
 
   return (
     <div>
@@ -239,7 +261,7 @@ const DetalhesLicitacoes = (props) => {
           </DialogContent>
         </Dialog>
       </div>
-    
+    <br />    <br />
       <TableContainer>
         <Table>
           <thead>
@@ -269,7 +291,7 @@ const DetalhesLicitacoes = (props) => {
         <TableSeparator />
       </TableContainer>
 
-      {/* <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre> */}
+      <pre>{JSON.stringify(etapaProjeto, null, 2)}</pre>
     </div>
   );
 };

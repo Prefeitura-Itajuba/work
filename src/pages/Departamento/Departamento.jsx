@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Button } from "@mui/material";
 
 import { api, createSession } from "../../services/api"
 import AppRoutes from "../../router/AppRoutes";
 import { useNavigate, Link } from "react-router-dom";
 
-import { useState } from "react"
+
 // import "../styles/secretaria.css"
 import {
     CenteredFormContainer,
@@ -22,40 +22,61 @@ import { styled, useTheme } from '@mui/material/styles';
 import Navbar from "../../components/Sidebar/Navbar";
 const AtualizarDepartamento = () => {
 
-    const [secsigla, setSecsigla] = useState("");
-    const [secnome, setSecnome] = useState("");
+    const [departamento, setListaDepartamento] = useState("");
+    // const [secretarias, setListaSecretarias] = useState([]);
+    const recoveredSession = localStorage.getItem("session");
+    const [ depNome, setDepNome ] = useState("");
+    const [ DepMaxDias, setDepMaxDias ] = useState("");
+    const [Secretaria_Id, setSecretaria_Id] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const formData = {
-            secsigla,
-            secnome
+            depNome,
+            DepMaxDias: "5",
+            Secretaria_Id
         };
-
-
-        api.post("secretarias", formData)
+        api
+            .post("departamentos", formData)
             .then((res) => {
-                console.log("Secretaria Cadastrada com suceso", res,);
+                console.log("Data saved successfully!", res);
             })
             .catch((error) => {
-                console.error("falha ao cadastrar a secretaria", error);
+                console.error("Error saving data:", error);
             });
-    };
+
+    }
+
+
+    useEffect(() => {
+        api
+        .get("departamentos", {
+            headers: {
+                session: recoveredSession,
+              },
+        })
+        .then((res) => {
+            console.log("lista Departamento", res.data);
+            setListaDepartamento(res);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         switch (name) {
-            case "secsigla":
-                console.log(secsigla)
-
-                setSecsigla(value);
-                break;
-            case "secnome":
-                console.log(secnome)
-
-                setSecnome(value);
-                break;
+            case "depNome":
+                setDepNome(value);
+            break;
+            case "DepMaxDias":
+                setDepMaxDias(value);
+            break;
+            case "Secretaria_Id":
+                setSecretaria_Id(value);
+            break;
             default:
                 break;
         }
@@ -82,52 +103,69 @@ const AtualizarDepartamento = () => {
     };
 
 
-
     return (
+
+
 
         <div>
             <Navbar />
             <div>
                 <Title>Criar Departamento</Title>
             </div>
+            {/* <p>sigla { secretarias[0].secnome } </p> */}
             <CenteredFormContainer>
                 <CustomForm onSubmit={handleSubmit} autoComplete="off">
+
+
                     <FieldContainer>
-                        <CustomLabel>Campo</CustomLabel>
-                        <CustomTextField
-                            Label="secsigla"
-                            type="text"
-                            id="secsigla"
-                            name="secsigla"
-                            value={secsigla}
-                            onChange={handleInputChange}
-                            placeholder="Campo 1"
-                            required
-                        />
-                    </FieldContainer>
-                    <FieldContainer>
-                        <CustomLabel>Campo </CustomLabel>
+                        <CustomLabel>Nome do Departamento </CustomLabel>
                         <CustomTextField
                             type="text"
-                            Label="secnome"
-                            id="secnome"
-                            name="secnome"
-                            value={secnome}
+                            Label="depNome"
+                            id="depNome"
+                            name="depNome"
+                            value={depNome}
                             onChange={handleInputChange}
-                            placeholder="Campo 2"
+
                         />
                     </FieldContainer>
+
+                    <FieldContainer>
+                        <CustomLabel>Dias Maximos </CustomLabel>
+                        <CustomTextField
+                            type="number"
+                            Label="DepMaxDias"
+                            id="DepMaxDias"
+                            name="DepMaxDias"
+                            value={DepMaxDias}
+                            onChange={handleInputChange}
+
+                        />
+                    </FieldContainer>
+
+                    <FieldContainer>
+                        <CustomLabel>Selecionar Secretaria </CustomLabel>
+                        <select value={Secretaria_Id} name="Secretaria_Id" onChange={handleInputChange}>
+                        <option value="">Selecionar Secretaria</option>
+                        <option value="1">SEMIN</option>
+                        <option value="4">SECUT</option>
+                        <option value="5">SECOM</option>
+                        </select>
+                    </FieldContainer> 
 
 
                     <CenterBtn>
-                        <StyledButton onClick={() => { navigate("/NovoDepartamento") }} id="btn-entrar" variant="contained" size="medium" type="submit">
-                            Criar Departamento
-                        </StyledButton>
-                    </CenterBtn>
+          <Button id="btn-entrar" variant="contained" size="medium" type="submit" onChange={handleInputChange}
+              required>
+              Criar
+            </Button>
+            </CenterBtn>
                 </CustomForm>
             </CenteredFormContainer>
 
+            <pre>{JSON.stringify(departamento.data, null, 2)}</pre>
         </div>
+
     );
 };
 

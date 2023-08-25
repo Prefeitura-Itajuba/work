@@ -8,10 +8,37 @@ import "./styles.css";
 import { styled, useTheme } from "@mui/material/styles";
 import Navbar from "../../components/Sidebar/Navbar";
 import Button from '@mui/material/Button';
-
+import MuiDrawer from '@mui/material/Drawer';
+import Box from '@mui/material/Box';
+import MuiAppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Container from '@mui/material/Container';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ViewList from '@mui/icons-material/ViewListOutlined';
+import DarkMode from '@mui/icons-material/DarkModeOutlined';
+import LightMode from '@mui/icons-material/LightModeOutlined';
+import SupervisorAccount from '@mui/icons-material/SupervisorAccountOutlined';
+import WorkIcon from '@mui/icons-material/WorkOutline';
+// import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import SearchIcon from "@mui/icons-material/Search";
 import QueueIcon from '@mui/icons-material/Queue';
-const Home = () => {
+import CreateIcon from '@mui/icons-material/Create';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
+import DescriptionIcon from '@mui/icons-material/Description';
+
+import HomeIcon from "@mui/icons-material/Home";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import LogoutIcon from "@mui/icons-material/Logout";
+const Home = (props) => {
   const { authenticated, logout } = useContext(AuthContext);
   const recoveredSession = localStorage.getItem("session");
 
@@ -97,47 +124,150 @@ const Home = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [menuAberto, alterarMenuAberto] = useState(true);
+  const toggleDrawer = () => {
+    alterarMenuAberto(!menuAberto);
+  };
 
+  const drawerWidth = 240;
+
+  const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+  })(({ theme, open }) => ({
+    // zIndex: theme.zIndex.drawer + 0,
+    background: "#132544",
+    ...(open && {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+    
+    }),
+  }));
+  
+  const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }) => ({
+    '& .MuiDrawer-paper': {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+    
+     
+      boxSizing: 'border-box',
+      ...(!open && {
+        overflowX: 'hidden',
+      
+        width: theme.spacing(7),
+        [theme.breakpoints.up('sm')]: {
+          width: theme.spacing(7.5),
+        },
+      }),
+    },
+  }));
+
+
+  const SidebarData = [
+    { title: "Início", path: "/home",
+     icon: <HomeIcon />,
+      cName: "nav-text" },
+  
+    {
+      title: "Processos",
+      path: "/processos",
+      icon: <AssignmentIcon />,
+      cName: "nav-text",
+    },
+    {
+      title: "Cadastro",
+      path: "/NovoUsuario",
+      icon: <HowToRegIcon />,
+      cName: "nav-text",
+    },
+    {
+      title: "Criar Secretaria",
+      path: "/NovaSecretaria",
+      icon: <CreateIcon />,
+      cName: "nav-text",
+    },
+    {
+      title: "Criar Departamento",
+      path: "/Departamentos",
+      icon: <AutoAwesomeMosaicIcon />,
+      cName: "nav-text",
+      // Cannot access 'confirmLogout'
+    },
+    {
+      title: "Tipo Projeto",
+      path: "/TipoProjeto",
+      icon: <DescriptionIcon />,
+      cName: "nav-text",
+  
+      // Cannot access 'confirmLogout'
+    },
+    {
+      title: "Sair",
+      // icon: <LogoutIcon />,
+      cName: "nav-text",
+  
+      // Cannot access 'confirmLogout'
+    },
+  ];
+  
   return (
     <div>
-      <Navbar />
-      <div className="divSeparate">
-        <div>
-          <h1 className="h1-solicitacoes textCenter">Solicitações</h1>
-        </div>
-        <div className="positionInputs">
-          <select
-            name="status"
-            className="select-style"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+      <Box sx={{ display: 'flex' }}>
+      <AppBar position='absolute' open={menuAberto}>
+        <Toolbar sx={{ paddingRight: '24px' }}>
+          {/* <IconButton
+            edge='start'
+            color='inherit'
+            aria-label='open drawer'
+            onClick={toggleDrawer}
+            sx={{ marginRight: '36px', ...(menuAberto && { display: 'none' }) }}
           >
-            <option value="Em andamento">Em andamento</option>
-            <option value="Concluído">Concluído</option>
-            <option value="Cancelado">Cancelado</option>
-            <option value="Ata">Ata</option>
-          </select>
-
-          <input
-            id="outlined-basic"
-            label="Pesquisar"
-            variant="outlined"
-            className="input-style"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Pesquisar por descrição"
-          />
-        </div>
-
-      </div>
-      <div className="alignBtnSolicitacao">
-        <Link to="/NovaSolicitacao">
-
-          <Button variant="contained" style={{ width: '146px', height: '49px', textTransform: 'none', fontFamily: 'Inter', fontWeight: '300' }}>Nova solicitação</Button>
-
-        </Link>
-      </div>
-      <div className="table">
+            <MenuIcon />
+          </IconButton> */}
+          <Box sx={{ flexGrow: 1 }} />
+          <IconButton sx={{ ml: 1 }} onClick={props.changeTheme} color='inherit'>
+          </IconButton>
+          <IconButton color='inherit'>
+            <Avatar sx={{ bgcolor: 'primary.main' }} />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant='permanent' open={menuAberto}>
+        <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', px: [1] }}>
+          {/* <Typography component='h1' variant='h5' fontWeight={700}>
+            Menu
+          </Typography> */}
+          <IconButton color='inherit' aria-label='open drawer' onClick={toggleDrawer}>
+            {menuAberto ? <ChevronLeftIcon /> : <MenuIcon />}
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List
+          component='nav'
+          sx={{
+            span: { color: (t) => (t.palette.mode === 'light' ? t.palette.grey[900] : t.palette.text.primary) },
+            a: { textDecoration: 'none' },
+          }}
+        >
+          {SidebarData.map((item, index) => (
+            <NavLink key={index} to={item.path}>
+              <ListItemButton>
+                <ListItemIcon style={{ color: "#132544", fontSize: "3rem" }}>
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItemButton>
+            </NavLink>
+          ))}
+        </List>
+      </Drawer>
+      <Box
+        component='main'
+    
+      >
+        <Container maxWidth='100%' sx={{ paddingY: 1, marginTop: 10 }}>
+          <Box>
+          <div className="table">
         <table className="custom-table">
           <thead className="table-header">
             <tr>
@@ -185,6 +315,12 @@ const Home = () => {
 
       </table>
     </div>
+          </Box>
+        </Container>
+      </Box>
+    </Box>
+      {/* <Navbar /> */}
+    
     </div >
   );
 };

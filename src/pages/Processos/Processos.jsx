@@ -21,11 +21,11 @@ const Processos = () => {
   const [statusFilter, setStatusFilter] = useState('Em andamento');
   const [searchTerm, setSearchTerm] = useState('');
   const [listaLicitatorio, setListaLicitatorio] = useState([]);
-  const [atualizaProcesso,setAtualizaProcesso] = useState([]);
+  const [atualizaProcesso, setAtualizaProcesso] = useState([]);
 
   const navigate = useNavigate();
 
-  
+
   useEffect(() => {
     api
       .get("processolicitatorios", {
@@ -46,7 +46,7 @@ const Processos = () => {
     if (!authenticated) {
       return navigate("/");
     }
-  }, []); 
+  }, []);
 
   // const { ususers } = JSON.parse(recoveredSession);
 
@@ -79,7 +79,7 @@ const Processos = () => {
   };
 
   const handleDrawerClose = () => {
-    setOpen(false); 
+    setOpen(false);
   };
 
   const handleNavigation = (route, text) => {
@@ -91,14 +91,14 @@ const Processos = () => {
     console.log("Clicked Project Data:", project);
   };
 
-//   api.post("etapaslicitarios")
-//   .then((res) => {
-//       console.log("Secretaria Cadastrada com suceso", res,);
-//   })
-//   .catch((error) => {
-//       console.error("falha ao cadastrar a secretaria", error);
-//   });
-// };
+  //   api.post("etapaslicitarios")
+  //   .then((res) => {
+  //       console.log("Secretaria Cadastrada com suceso", res,);
+  //   })
+  //   .catch((error) => {
+  //       console.error("falha ao cadastrar a secretaria", error);
+  //   });
+  // };
 
 
   return (
@@ -151,17 +151,17 @@ const Processos = () => {
           </thead>
           <tbody>
             {listaLicitatorio && listaLicitatorio.data && listaLicitatorio.data.map((licitatorio) => (
-              <tr key={licitatorio.idprocessos_licitatorios}>  
+              <tr key={licitatorio.idprocessos_licitatorios}>
                 <td>{licitatorio.licinome}</td>
                 <td>{licitatorio.licinumero}</td>
                 {/* <td>{projeto.depNome}</td>
                 <td>{projeto.tpjdescricao}</td>
                 <td>{projeto.prjvalor}</td> */}
                 <td>
-                  {/* <NavLink to={`/detalhesLicitacoes/${projeto.prjid}`} onClick={() => handleQueueIconClick(projeto)}
+                  <NavLink to={`/detalhesProcessos/${licitatorio.idprocessos_licitatorios}`} state={{ dadosDoProjeto: licitatorio } }
                   >
                     <QueueIcon />
-                  </NavLink> */}
+                  </NavLink>
                 </td>
               </tr>
             ))}
