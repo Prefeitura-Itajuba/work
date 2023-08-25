@@ -130,16 +130,21 @@ const Home = (props) => {
   };
 
   const drawerWidth = 240;
-
   const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
   })(({ theme, open }) => ({
     // zIndex: theme.zIndex.drawer + 0,
-    background: "#132544",
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
     ...(open && {
       marginLeft: drawerWidth,
       width: `calc(100% - ${drawerWidth}px)`,
-    
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     }),
   }));
   
@@ -148,12 +153,18 @@ const Home = (props) => {
       position: 'relative',
       whiteSpace: 'nowrap',
       width: drawerWidth,
-    
-     
+      height: '49.7vw',
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
       boxSizing: 'border-box',
       ...(!open && {
         overflowX: 'hidden',
-      
+        transition: theme.transitions.create('width', {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
         width: theme.spacing(7),
         [theme.breakpoints.up('sm')]: {
           width: theme.spacing(7.5),
@@ -161,7 +172,7 @@ const Home = (props) => {
       }),
     },
   }));
-
+  
 
   const SidebarData = [
     { title: "Início", path: "/home",
@@ -267,6 +278,7 @@ const Home = (props) => {
       >
         <Container maxWidth='100%' sx={{ paddingY: 1, marginTop: 10 }}>
           <Box>
+            <button onClick={confirmLogout}>Sair</button>
           <div className="table">
         <table className="custom-table">
           <thead className="table-header">

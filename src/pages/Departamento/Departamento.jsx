@@ -28,7 +28,8 @@ const AtualizarDepartamento = () => {
     const [ depNome, setDepNome ] = useState("");
     const [ DepMaxDias, setDepMaxDias ] = useState("");
     const [Secretaria_Id, setSecretaria_Id] = useState("");
-
+    const [secnome, setSecnome] = useState([])
+ 
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -64,6 +65,24 @@ const AtualizarDepartamento = () => {
             console.error(error);
           });
     }, []);
+
+
+    useEffect(() => {
+        api
+        .get("secretaria", {
+            headers: {
+                session: recoveredSession,
+              },
+        })
+        .then((res) => {
+            console.log("lista Secretarias", res.data);
+            setSecnome(res);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+    }, []);
+
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -147,9 +166,9 @@ const AtualizarDepartamento = () => {
                         <CustomLabel>Selecionar Secretaria </CustomLabel>
                         <select value={Secretaria_Id} name="Secretaria_Id" onChange={handleInputChange}>
                         <option value="">Selecionar Secretaria</option>
-                        <option value="1">SEMIN</option>
-                        <option value="4">SECUT</option>
-                        <option value="5">SECOM</option>
+                        {secretarias.map((secretaria) => (
+                            <option>{secretaria.secnome} </option>
+                        ))}
                         </select>
                     </FieldContainer> 
 
